@@ -6,7 +6,7 @@ import java.util.List;
  * Created by georgeyang1024 on 2017/12/22.
  */
 
-public class Layer {
+public class StLayer {
 
     public String type;
     public String name;
