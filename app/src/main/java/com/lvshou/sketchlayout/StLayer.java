@@ -1,6 +1,9 @@
 package com.lvshou.sketchlayout;
 
 
+import android.text.TextUtils;
+import android.util.Log;
+
 import java.util.List;
 
 /**
@@ -8,6 +11,7 @@ import java.util.List;
  */
 
 public class StLayer {
+    public String objectID;
     public String type;
     public String name;
     public StRect rect;
@@ -23,6 +27,23 @@ public class StLayer {
 
     @Override
     public String toString() {
-        return PinyinUtil.getPinyinName(name);
+        return "@+id/" + getViewId();
     }
+
+    private String viewId;
+    public String getViewId() {
+        if (TextUtils.equals(name,"parent")) return name;
+        if (TextUtils.isEmpty(viewId)) {
+            if (PinyinUtil.isChinese(name)) {
+                viewId = PinyinUtil.getPinyinName(name);
+            } else {
+                viewId = PinyinUtil.getName(name);
+            }
+        }
+        if (TextUtils.isEmpty(viewId)) {
+            viewId = PinyinUtil.getName("id_" + objectID.hashCode());
+        }
+        return viewId;
+    }
+
 }

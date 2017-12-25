@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             tools:context="com.lvshou.sketchlayout.MainActivity">
+
+    <TextView
+        android:id="@+id/parent"
+        android:layout_width="750px"
+        android:layout_height="1334px"
+        android:text=""
+        android:background="#ff6b9455"
+        />
+    <TextView
+        android:id="@+id/Rectangle4"
+        android:layout_width="600px"
+        android:layout_height="90px"
+        android:text=""
+        android:background="#ff9cb03b"
+        app:layout_constraintLeft_toLeftOf="@+id/parent"
+        app:layout_constraintRight_toRightOf="@+id/parent"
+        app:layout_constraintBottom_toBottomOf="@+id/parent"
+        android:layout_marginBottom="502px"
+
+        />
+    <TextView
+        android:id="@+id/id_2039134470"
+        android:layout_width="464px"
+        android:layout_height="81px"
+        android:text="欢迎你来到好享瘦"
+        android:background="#fffcb32a"
+        app:layout_constraintLeft_toLeftOf="@+id/parent"
+        android:layout_marginLeft="76px"
+
+        app:layout_constraintTop_toTopOf="@+id/parent"
+        android:layout_marginTop="275px"
+
+        />
+    <TextView
+        android:id="@+id/id_706555545"
+        android:layout_width="136px"
+        android:layout_height="48px"
+        android:text="随便看看"
+        android:background="#ffe5852c"
+        app:layout_constraintLeft_toLeftOf="@+id/parent"
+        android:layout_marginLeft="76px"
+
+        app:layout_constraintTop_toTopOf="@+id/parent"
+        android:layout_marginTop="397px"
+
+        />
+    <TextView
+        android:id="@+id/id_1898014241"
+        android:layout_width="82px"
+        android:layout_height="48px"
+        android:text="登录"
+        android:background="#ff2faca7"
+        app:layout_constraintRight_toRightOf="@+id/Rectangle4"
+        android:layout_marginRight="258px"
+
+        app:layout_constraintTop_toTopOf="@+id/Rectangle4"
+        app:layout_constraintBottom_toBottomOf="@+id/Rectangle4"
+        />
+    <TextView
+        android:id="@+id/id_1883847710"
+        android:layout_width="82px"
+        android:layout_height="48px"
+        android:text="注册"
+        android:background="#ff4dbde9"
+        app:layout_constraintLeft_toLeftOf="@+id/id_1898014241"
+        app:layout_constraintRight_toRightOf="@+id/id_1898014241"
+        app:layout_constraintBottom_toBottomOf="@+id/parent"
+        android:layout_marginBottom="414px"
+
+        />
+    <TextView
+        android:id="@+id/VIRGIN"
+        android:layout_width="78px"
+        android:layout_height="26px"
+        android:text="VIRGIN"
+        android:background="#ff88e9b2"
+        app:layout_constraintLeft_toLeftOf="@+id/parent"
+        android:layout_marginLeft="89px"
+
+        app:layout_constraintTop_toTopOf="@+id/parent"
+        android:layout_marginTop="8px"
+
+        />
+    <TextView
+        android:id="@+id/id_725815470"
+        android:layout_width="101px"
+        android:layout_height="37px"
+        android:text="微信登录"
+        android:background="#ffbbe2d4"
+        app:layout_constraintRight_toRightOf="@+id/id_2039134470"
+        android:layout_marginRight="29px"
+
+        app:layout_constraintBottom_toBottomOf="@+id/id_1883847710"
+        android:layout_marginBottom="357px"
+
+        />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.lvshou.sketchlayout;
 
+
 /**
  * Created by george.yang on 17/12/22.
  */
@@ -14,12 +15,12 @@ public class LayoutTag {
     @Override
     public String toString() {
         return "LayoutTag{" +
-                "leftLayer=" + leftLayer +
+                "source=" + source +
+                ", outLayer=" + outLayer +
+                ", leftLayer=" + leftLayer +
                 ", rightLayer=" + rightLayer +
                 ", topLayer=" + topLayer +
                 ", bottomLayer=" + bottomLayer +
-                ", outLayer=" + outLayer +
-                ", source=" + source +
                 ", leftDis=" + leftDis +
                 ", rightDis=" + rightDis +
                 ", topDis=" + topDis +

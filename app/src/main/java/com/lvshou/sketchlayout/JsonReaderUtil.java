@@ -21,14 +21,14 @@ public class JsonReaderUtil  {
             T ret = clazz.newInstance();
             while (reader.hasNext()) {
                 String name = reader.nextName();
-                Log.d("test","name:" + name);
+//                Log.d("test","name:" + name);
                 Field[] fields = clazz.getDeclaredFields();
                 boolean find = false;
                 for (Field field : fields) {
                     field.setAccessible(true);
                     if (TextUtils.equals(name, field.getName())) {
                         Class fClazz = field.getType();
-                        Log.d("test", "fClazz:" + fClazz);
+//                        Log.d("test", "fClazz:" + fClazz);
                         find = true;
                         if (fClazz.equals(Integer.class) || fClazz.equals(int.class)) {
                             field.set(ret, reader.nextInt());
