@@ -1,5 +1,6 @@
 package com.lvshou.sketchlayout;
 
+
 import java.util.List;
 
 /**
@@ -7,10 +8,10 @@ import java.util.List;
  */
 
 public class StLayer {
-
     public String type;
     public String name;
     public StRect rect;
+    public String content;
     public int rotation;
     public int radius;
     public List<String> css;
@@ -18,4 +19,10 @@ public class StLayer {
     public String fontFace;
     public String textAlign;
     public float letterSpacing;
+    public StColor color;
+
+    @Override
+    public String toString() {
+        return PinyinUtil.getPinyinName(name);
+    }
 }
