@@ -29,7 +29,7 @@ public class PinyinUtil {
     }
 
     public static String getName(String string) {
-        return string.replace(" ","").replace("-","").replace(":","_").replace("\"","_");
+        return string.replace(" ","").replace("-","").replace(":","_").replace("\"","_").toLowerCase();
     }
 
 }

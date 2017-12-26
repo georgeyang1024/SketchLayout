@@ -6,6 +6,6 @@ package com.lvshou.sketchlayout;
 
 public class StColor {
     public String color_hex,argb_hex,css_rgba,ui_color;
-    public int r,g,b,a;
+    public float r,g,b,a;
 
 }

@@ -23,27 +23,30 @@ public class StLayer {
     public String fontFace;
     public String textAlign;
     public float letterSpacing;
-    public StColor color;
+//    public StColor color;
 
     @Override
     public String toString() {
-        return "@+id/" + getViewId();
+        return TextUtils.equals(getViewId(),"parent") ? "parent" : "@+id/" + getViewId();
     }
 
-    private String viewId;
     public String getViewId() {
         if (TextUtils.equals(name,"parent")) return name;
-        if (TextUtils.isEmpty(viewId)) {
+        String ret = null;
             if (PinyinUtil.isChinese(name)) {
-                viewId = PinyinUtil.getPinyinName(name);
+                ret =  PinyinUtil.getPinyinName(name);
             } else {
-                viewId = PinyinUtil.getName(name);
+                ret =  PinyinUtil.getName(name);
             }
-        }
-        if (TextUtils.isEmpty(viewId)) {
-            viewId = PinyinUtil.getName("id_" + objectID.hashCode());
-        }
-        return viewId;
+
+            if (TextUtils.isEmpty(ret)) {
+                return PinyinUtil.getName("id_" + objectID.hashCode());
+            } else {
+                return ret;
+            }
+
+
+
     }
 
 }

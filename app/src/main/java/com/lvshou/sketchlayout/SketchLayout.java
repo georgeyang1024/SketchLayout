@@ -31,7 +31,7 @@ public class SketchLayout extends ConstraintLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    int showIndex = 1;//登录页
+    int showIndex = 2;//登录页
     public void show() {
         try {
             //3.0设计/登录注册/index.html#artboard9
@@ -45,9 +45,8 @@ public class SketchLayout extends ConstraintLayout {
                     reader.beginArray();
                     int index = 0;
                     while (reader.hasNext()) {
+                        reader.beginObject();
                         if (index==showIndex) {
-//                            startLayout(reader);
-                            reader.beginObject();
                             StArtboards stArtboards = JsonReaderUtil.paresObject(reader, StArtboards.class);
                             Log.d("test","name:" + stArtboards.name);
                             if (stArtboards.height*1f/stArtboards.width<=16f/9) {
@@ -57,8 +56,12 @@ public class SketchLayout extends ConstraintLayout {
                                 //一屏幕能展示完，边缘开始布局
                                 doLater(stArtboards);
                             }
-                            reader.endObject();
                         }
+                        while (reader.hasNext()) {
+                            reader.nextName();
+                            reader.skipValue();
+                        }
+                        reader.endObject();
                         index++;
                     }
                     reader.endArray();
@@ -83,7 +86,7 @@ public class SketchLayout extends ConstraintLayout {
      * 按照元素离屏幕原点或最远点进行由近到远排序
      * @param effectList
      */
-    private void orderFindList(final  StArtboards artboards,List<StLayer> effectList) {
+    private void orderFindList(final StArtboards artboards,List<StLayer> effectList) {
         Collections.sort(effectList, new Comparator<StLayer>() {
             @Override
             public int compare(StLayer layer, StLayer t1) {
@@ -102,15 +105,6 @@ public class SketchLayout extends ConstraintLayout {
 
     private ArrayList<StLayer> filterLayer(StArtboards artboards) throws Exception {
         ArrayList<StLayer> layers = new ArrayList<>();
-        StLayer parentLayer = new StLayer();
-        parentLayer.name = "parent";
-        parentLayer.objectID = "id";
-        parentLayer.rect = new StRect();
-        parentLayer.rect.x = 0;
-        parentLayer.rect.y = 0;
-        parentLayer.rect.width = artboards.width;
-        parentLayer.rect.height = artboards.height;
-        layers.add(parentLayer);
         for (StLayer layer:artboards.layers) {
             if (!LayerFilterUtil.filter(artboards,layer)) {
                 layers.add(layer);
@@ -128,6 +122,7 @@ public class SketchLayout extends ConstraintLayout {
      */
     private List<LayoutTag> parseLayoutTags(StArtboards artboards,List<StLayer> orderEffectList) throws Exception {
         List<LayoutTag> layoutTags = new ArrayList<>();//已找到位置的Layer列表
+        List<String> names = new ArrayList<>();
         StringBuffer xmlBuffer = new StringBuffer();
         for (int i = 0; i < orderEffectList.size(); i++) {//从外往里循环找位置
             StLayer sourceLayer = orderEffectList.get(i);
@@ -135,14 +130,14 @@ public class SketchLayout extends ConstraintLayout {
             StLayer leftLayer = null,rightLayer = null,topLayer = null,bottomLayer = null,outerLayer = null;
             double leftLayerDis = 0,rightLayerDis = 0,topLayerDis = 0,bottomLayerDis = 0;
             double tempDis;
-            Log.d("test","i:" + i);
+//            Log.d("test","i:" + i);
             for (int j = i-1;j >= i-6 && j >= 0 && j < orderEffectList.size(); j--) {//往外层搜最多5个
                 //循环内查找上下左右最近元素
 //                Log.d("test","j:" + j);
 //                if (j < 0) break;
 //                if (j > orderEffectList.size()) continue;
                 StLayer findLayer = orderEffectList.get(j);//参考目标
-                Log.d("test","findLayer:" + findLayer);
+//                Log.d("test","findLayer:" + findLayer);
                 tempDis = DisUtil.checkDis(sourceLayer,findLayer,Gravity.LEFT);
                 if (leftLayer == null) {
                     leftLayer = findLayer;
@@ -187,33 +182,15 @@ public class SketchLayout extends ConstraintLayout {
                 }
             }
 
-//            //元素上下左右外环最近的元素都已找到，筛选两个最优元素
-//            //查看是否有居中,局左边居右边距离相差2px，当成是居中
-//            if (leftLayer == rightLayer && Math.abs(leftLayerDis-rightLayerDis)<=2) {
-//                if (checkDis(sourceLayer,topLayer,Gravity.TOP)>checkDis(sourceLayer,bottomLayer,Gravity.BOTTOM)) {
-//                    topLayer = null;
-//                } else {
-//                    bottomLayer = null;
-//                }
-//            } else if (topLayer == bottomLayer && Math.abs(topLayerDis-bottomLayerDis)<=2) {
-//                if (checkDis(sourceLayer,leftLayer,Gravity.LEFT)>checkDis(sourceLayer,rightLayer,Gravity.RIGHT)) {
-//                    leftLayer = null;
-//                } else {
-//                    rightLayer = null;
-//                }
-//            } else {//没有居中的时候，找两个不同方向的元素
-//                if (topLayerDis>bottomLayerDis) {
-//                    topLayer = null;
-//                } else {
-//                    bottomLayer = null;
-//                }
-//                if (leftLayerDis>rightLayerDis) {
-//                    leftLayer = null;
-//                } else {
-//                    rightLayer = null;
-//                }
-//            }
-
+            //更名防止重复
+            String rename = PinyinUtil.getName(sourceLayer.name);
+            boolean finded = names.contains(rename);
+            if (finded) {
+                sourceLayer.name = PinyinUtil.getName(sourceLayer.name + sourceLayer.objectID.hashCode());
+            } else {
+                sourceLayer.name = rename;
+            }
+            names.add(sourceLayer.name);
 
             LayoutTag layoutTag = new LayoutTag();
             layoutTag.source = sourceLayer;

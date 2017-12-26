@@ -39,17 +39,35 @@ public class DisUtil {
      */
     public static final double checkDis(StLayer sourceLayer,StLayer tagLayer,int gravity) {
         if (sourceLayer == null || tagLayer == null) return Double.MAX_VALUE;
+//        if (gravity== Gravity.LEFT) {
+//            return Math.abs(tagLayer.rect.x - sourceLayer.rect.x);
+//        }
+//        if (gravity==Gravity.RIGHT) {
+//            return Math.abs(tagLayer.rect.x + tagLayer.rect.width - sourceLayer.rect.x - sourceLayer.rect.width);
+//        }
+//        if (gravity==Gravity.TOP) {
+//            return Math.abs(tagLayer.rect.y - sourceLayer.rect.y);
+//        }
+//        if (gravity==Gravity.BOTTOM) {
+//            return Math.abs(tagLayer.rect.y + tagLayer.rect.height - sourceLayer.rect.y - sourceLayer.rect.height);
+//        }
+//        return Double.MAX_VALUE;
+        return checkDis(sourceLayer.rect,tagLayer.rect,gravity);
+    }
+
+    public static final double checkDis(StRect sourceRect,StRect tagRect,int gravity) {
+        if (sourceRect == null || tagRect == null) return Double.MAX_VALUE;
         if (gravity== Gravity.LEFT) {
-            return Math.abs(tagLayer.rect.x - sourceLayer.rect.x);
+            return Math.abs(tagRect.x - sourceRect.x);
         }
         if (gravity==Gravity.RIGHT) {
-            return Math.abs(tagLayer.rect.x + tagLayer.rect.width - sourceLayer.rect.x - sourceLayer.rect.width);
+            return Math.abs(tagRect.x + tagRect.width - sourceRect.x - sourceRect.width);
         }
         if (gravity==Gravity.TOP) {
-            return Math.abs(tagLayer.rect.y - sourceLayer.rect.y);
+            return Math.abs(tagRect.y - sourceRect.y);
         }
         if (gravity==Gravity.BOTTOM) {
-            return Math.abs(tagLayer.rect.y + tagLayer.rect.height - sourceLayer.rect.y - sourceLayer.rect.height);
+            return Math.abs(tagRect.y + tagRect.height - sourceRect.y - sourceRect.height);
         }
         return Double.MAX_VALUE;
     }
