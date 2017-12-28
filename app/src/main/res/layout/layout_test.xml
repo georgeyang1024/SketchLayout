@@ -7,119 +7,115 @@
                                              tools:context="com.lvshou.sketchlayout.MainActivity">
 
     <TextView
-        android:id="@+id/rectanglecopy2"
-        android:layout_width="690px"
-        android:layout_height="100px"
-        android:text="rectanglecopy2"
-        android:background="#ffd4cf19"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-    <TextView
-        android:id="@+id/rectanglecopy2984887076"
-        android:layout_width="690px"
-        android:layout_height="100px"
-        android:text="rectanglecopy2984887076"
-        android:background="#ff5c3e56"
-        app:layout_constraintLeft_toLeftOf="@+id/rectanglecopy2"
-        app:layout_constraintRight_toRightOf="@+id/rectanglecopy2"
-        app:layout_constraintTop_toTopOf="@+id/rectanglecopy2"
-        app:layout_constraintBottom_toBottomOf="@+id/rectanglecopy2"
-        />
-    <TextView
-        android:id="@+id/rectangle"
-        android:layout_width="690px"
-        android:layout_height="100px"
-        android:text="rectangle"
-        android:background="#ffc65810"
-        app:layout_constraintLeft_toLeftOf="@+id/rectanglecopy2984887076"
-        app:layout_constraintRight_toRightOf="@+id/rectanglecopy2984887076"
-        app:layout_constraintTop_toTopOf="@+id/rectanglecopy2984887076"
-        app:layout_constraintBottom_toBottomOf="@+id/rectanglecopy2984887076"
-        />
-    <TextView
         android:id="@+id/rectangle4"
         android:layout_width="600px"
         android:layout_height="90px"
         android:text="rectangle4"
-        android:background="#ff4b715d"
-        app:layout_constraintLeft_toLeftOf="@+id/rectangle"
-        app:layout_constraintRight_toRightOf="@+id/rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/rectanglecopy2"
-        android:layout_marginTop="102px"
-
-        />
-    <TextView
-        android:id="@+id/line"
-        android:layout_width="690px"
-        android:layout_height="2px"
-        android:text="line"
-        android:background="#ffd52fa6"
-        app:layout_constraintLeft_toLeftOf="@+id/rectangle"
-        app:layout_constraintRight_toRightOf="@+id/rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/rectanglecopy2"
-        android:layout_marginTop="0px"
-
-        />
-    <TextView
-        android:id="@+id/line1503361615"
-        android:layout_width="690px"
-        android:layout_height="2px"
-        android:text="line1503361615"
-        android:background="#ff526348"
-        app:layout_constraintLeft_toLeftOf="@+id/line"
-        app:layout_constraintRight_toRightOf="@+id/line"
-        app:layout_constraintTop_toBottomOf="@+id/rectanglecopy2984887076"
-        android:layout_marginTop="0px"
-
-        />
-    <TextView
-        android:id="@+id/line1785658371"
-        android:layout_width="690px"
-        android:layout_height="2px"
-        android:text="line1785658371"
-        android:background="#ff136f83"
-        app:layout_constraintLeft_toLeftOf="@+id/line1503361615"
-        app:layout_constraintRight_toRightOf="@+id/line1503361615"
-        app:layout_constraintTop_toBottomOf="@+id/rectangle"
-        android:layout_marginTop="-2px"
-
-        />
-    <TextView
-        android:id="@+id/shape"
-        android:layout_width="128px"
-        android:layout_height="84px"
-        android:text="shape"
-        android:background="#ff398f8f"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginRight="5px"
+        android:background="#ff02216d"
+        app:layout_constraintLeft_toRight="parent"
+        android:layout_marginRight="-75px"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8px"
-
+        android:layout_marginBottom="502px"
+        />
+    <TextView
+        android:id="@+id/huaiyingqinglaidaohaoxiangshou"
+        android:layout_width="464px"
+        android:layout_height="81px"
+        android:text="欢迎你来到好享瘦"
+        android:background="#ff764040"
+        app:layout_constraintLeft_toLeftOf="@+id/rectangle4"
+        app:layout_constraintRight_toRightOf="@+id/rectangle4"
+        app:layout_constraintTop_toTopOf="@+id/rectangle4"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangle4"
+        />
+    <TextView
+        android:id="@+id/suibiankankan"
+        android:layout_width="136px"
+        android:layout_height="48px"
+        android:text="随便看看"
+        android:background="#ff3466a2"
+        app:layout_constraintLeft_toLeftOf="@+id/huaiyingqinglaidaohaoxiangshou"
+        app:layout_constraintRight_toRightOf="@+id/huaiyingqinglaidaohaoxiangshou"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:layout_marginBottom="-397px"
+        />
+    <TextView
+        android:id="@+id/denglu"
+        android:layout_width="82px"
+        android:layout_height="48px"
+        android:text="登录"
+        android:background="#ff7e21e8"
+        app:layout_constraintRight_toRightOf="@+id/rectangle4"
+        android:layout_marginRight="258px"
+        app:layout_constraintTop_toTopOf="@+id/rectangle4"
+        app:layout_constraintBottom_toBottomOf="@+id/rectangle4"
         />
     <TextView
         android:id="@+id/zhuce"
-        android:layout_width="112px"
-        android:layout_height="78px"
+        android:layout_width="82px"
+        android:layout_height="48px"
         android:text="注册"
-        android:background="#ff0fc274"
-        app:layout_constraintLeft_toLeftOf="@+id/line1785658371"
-        android:layout_marginLeft="0px"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="59px"
+        android:background="#ff6720d8"
+        app:layout_constraintLeft_toLeftOf="@+id/denglu"
+        app:layout_constraintRight_toRightOf="@+id/denglu"
+        app:layout_constraintTop_toBottomOf="@+id/rectangle4"
+        android:layout_marginTop="88px"
         />
     <TextView
-        android:id="@+id/qingshuruyaoqingma"
-        android:layout_width="269px"
-        android:layout_height="42px"
-        android:text="请输入邀请码(可选)"
-        android:background="#ff3183c3"
-        app:layout_constraintLeft_toLeftOf="@+id/line1785658371"
-        android:layout_marginLeft="0px"
-        app:layout_constraintTop_toBottomOf="@+id/line"
-        android:layout_marginTop="-11px"
-
+        android:id="@+id/weixindenglu"
+        android:layout_width="101px"
+        android:layout_height="37px"
+        android:text="微信登录"
+        android:background="#ff7d6b6f"
+        app:layout_constraintRight_toLeftOf="@+id/huaiyingqinglaidaohaoxiangshou"
+        android:layout_marginLeft="-29px"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="57px"
         />
+    <TextView
+        android:id="@+id/fill1"
+        android:layout_width="38px"
+        android:layout_height="31px"
+        android:text="fill1"
+        android:background="#ff61a32b"
+        app:layout_constraintRight_toLeftOf="@+id/zhuce"
+        android:layout_marginLeft="-39px"
+        app:layout_constraintTop_toTopOf="@+id/weixindenglu"
+        app:layout_constraintBottom_toBottomOf="@+id/weixindenglu"
+        />
+    <TextView
+        android:id="@+id/line"
+        android:layout_width="3px"
+        android:layout_height="31px"
+        android:text="line"
+        android:background="#ff0fde87"
+        app:layout_constraintLeft_toLeftOf="@+id/zhuce"
+        app:layout_constraintRight_toRightOf="@+id/zhuce"
+        app:layout_constraintTop_toTopOf="@+id/fill1"
+        app:layout_constraintBottom_toBottomOf="@+id/fill1"
+        />
+    <TextView
+        android:id="@+id/qqdenglu"
+        android:layout_width="89px"
+        android:layout_height="37px"
+        android:text="QQ登录"
+        android:background="#ff7b67e9"
+        app:layout_constraintRight_toRightOf="@+id/line"
+        android:layout_marginRight="44px"
+        app:layout_constraintTop_toTopOf="@+id/weixindenglu"
+        app:layout_constraintBottom_toBottomOf="@+id/weixindenglu"
+        />
+    <TextView
+        android:id="@+id/fill123"
+        android:layout_width="26px"
+        android:layout_height="31px"
+        android:text="fill12100855888"
+        android:background="#ff469ea4"
+        app:layout_constraintLeft_toLeftOf="@+id/qqdenglu"
+        app:layout_constraintRight_toRightOf="@+id/qqdenglu"
+        app:layout_constraintTop_toTopOf="@+id/line"
+        app:layout_constraintBottom_toBottomOf="@+id/line"
+        />
+
+
 </android.support.constraint.ConstraintLayout>

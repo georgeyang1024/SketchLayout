@@ -31,7 +31,7 @@ public class SketchLayout extends ConstraintLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    int showIndex = 2;//登录页
+    int showIndex = 0;//登录页
     public void show() {
         try {
             //3.0设计/登录注册/index.html#artboard9
@@ -65,8 +65,9 @@ public class SketchLayout extends ConstraintLayout {
                         index++;
                     }
                     reader.endArray();
+                } else {
+                    reader.skipValue();
                 }
-                reader.skipValue();
             }
             reader.endObject();
         } catch (Exception e) {
@@ -124,6 +125,16 @@ public class SketchLayout extends ConstraintLayout {
         List<LayoutTag> layoutTags = new ArrayList<>();//已找到位置的Layer列表
         List<String> names = new ArrayList<>();
         StringBuffer xmlBuffer = new StringBuffer();
+
+        StLayer rootLayer = new StLayer();
+        rootLayer.name = "parent";
+        rootLayer.objectID = "parent";
+        rootLayer.rect = new StRect();
+        rootLayer.rect.x = 0;
+        rootLayer.rect.y = 0;
+        rootLayer.rect.width = artboards.width;
+        rootLayer.rect.height = artboards.height;
+
         for (int i = 0; i < orderEffectList.size(); i++) {//从外往里循环找位置
             StLayer sourceLayer = orderEffectList.get(i);
             Log.d("test","curr:" + sourceLayer);
@@ -138,38 +149,38 @@ public class SketchLayout extends ConstraintLayout {
 //                if (j > orderEffectList.size()) continue;
                 StLayer findLayer = orderEffectList.get(j);//参考目标
 //                Log.d("test","findLayer:" + findLayer);
-                tempDis = DisUtil.checkDis(sourceLayer,findLayer,Gravity.LEFT);
+                tempDis = DisUtil.checkDisDirection(sourceLayer,findLayer,Gravity.LEFT);
                 if (leftLayer == null) {
                     leftLayer = findLayer;
                     leftLayerDis = tempDis;
-                } else if (tempDis<leftLayerDis) {//由于逐渐往外查找，两个里外不同，相同的距离，不要用等于取到最外层
+                } else if (Math.abs(tempDis)<Math.abs(leftLayerDis)) {//由于逐渐往外查找，两个里外不同，相同的距离，不要用等于取到最外层
                     leftLayer = findLayer;
                     leftLayerDis = tempDis;
                 }
 
-                tempDis = DisUtil.checkDis(sourceLayer,findLayer,Gravity.RIGHT);
+                tempDis = DisUtil.checkDisDirection(sourceLayer,findLayer,Gravity.RIGHT);
                 if (rightLayer == null) {
                     rightLayer = findLayer;
                     rightLayerDis = tempDis;
-                } else if (tempDis<rightLayerDis) {
+                } else if (Math.abs(tempDis)<Math.abs(rightLayerDis)) {
                     rightLayer = findLayer;
                     rightLayerDis = tempDis;
                 }
 
-                tempDis = DisUtil.checkDis(sourceLayer,findLayer,Gravity.TOP);
+                tempDis = DisUtil.checkDisDirection(sourceLayer,findLayer,Gravity.TOP);
                 if (topLayer == null) {
                     topLayer = findLayer;
                     topLayerDis = tempDis;
-                } else if (tempDis<topLayerDis) {
+                } else if (Math.abs(tempDis)<Math.abs(topLayerDis)) {
                     topLayer = findLayer;
                     topLayerDis = tempDis;
                 }
 
-                tempDis = DisUtil.checkDis(sourceLayer,findLayer,Gravity.BOTTOM);
+                tempDis = DisUtil.checkDisDirection(sourceLayer,findLayer,Gravity.BOTTOM);
                 if (bottomLayer == null) {
                     bottomLayer = findLayer;
                     bottomLayerDis = tempDis;
-                } else if (tempDis<bottomLayerDis) {
+                } else if (Math.abs(tempDis)<Math.abs(bottomLayerDis)) {
                     bottomLayer = findLayer;
                     bottomLayerDis = tempDis;
                 }
@@ -208,7 +219,7 @@ public class SketchLayout extends ConstraintLayout {
 
             layoutTag.outLayer = outerLayer;
 
-            String xml = LayoutTagBuildUtil.generatedLayout(artboards,sourceLayer,layoutTag);
+            String xml = LayoutTagBuildUtil.generatedLayout(artboards,rootLayer,sourceLayer,layoutTag);
             xmlBuffer.append(xml+"\n");
 
             layoutTags.add(layoutTag);

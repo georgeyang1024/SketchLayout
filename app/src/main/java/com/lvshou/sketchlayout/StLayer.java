@@ -27,26 +27,23 @@ public class StLayer {
 
     @Override
     public String toString() {
-        return TextUtils.equals(getViewId(),"parent") ? "parent" : "@+id/" + getViewId();
+        return TextUtils.equals(objectID,"parent") ? "parent" : "@+id/" + getViewId();
     }
 
+    private String viewId;
     public String getViewId() {
-        if (TextUtils.equals(name,"parent")) return name;
-        String ret = null;
-            if (PinyinUtil.isChinese(name)) {
-                ret =  PinyinUtil.getPinyinName(name);
-            } else {
-                ret =  PinyinUtil.getName(name);
-            }
-
-            if (TextUtils.isEmpty(ret)) {
-                return PinyinUtil.getName("id_" + objectID.hashCode());
-            } else {
-                return ret;
-            }
-
-
-
+        if (!TextUtils.isEmpty(viewId)) {
+            return viewId;
+        }
+        if (PinyinUtil.isChinese(name)) {
+            viewId =  PinyinUtil.getPinyinName(name);
+        } else {
+            viewId =  PinyinUtil.getName(name);
+        }
+        if (TextUtils.isEmpty(viewId)) {
+            viewId = PinyinUtil.getName("id_" + objectID.hashCode());
+        }
+        return  viewId;
     }
 
 }

@@ -37,37 +37,31 @@ public class DisUtil {
      * @param gravity
      * @return
      */
-    public static final double checkDis(StLayer sourceLayer,StLayer tagLayer,int gravity) {
+    public static final double checkDisDirection(StLayer sourceLayer,StLayer tagLayer,int gravity) {
         if (sourceLayer == null || tagLayer == null) return Double.MAX_VALUE;
-//        if (gravity== Gravity.LEFT) {
-//            return Math.abs(tagLayer.rect.x - sourceLayer.rect.x);
-//        }
-//        if (gravity==Gravity.RIGHT) {
-//            return Math.abs(tagLayer.rect.x + tagLayer.rect.width - sourceLayer.rect.x - sourceLayer.rect.width);
-//        }
-//        if (gravity==Gravity.TOP) {
-//            return Math.abs(tagLayer.rect.y - sourceLayer.rect.y);
-//        }
-//        if (gravity==Gravity.BOTTOM) {
-//            return Math.abs(tagLayer.rect.y + tagLayer.rect.height - sourceLayer.rect.y - sourceLayer.rect.height);
-//        }
-//        return Double.MAX_VALUE;
-        return checkDis(sourceLayer.rect,tagLayer.rect,gravity);
+        return checkDisDirection(sourceLayer.rect,tagLayer.rect,gravity);
     }
 
-    public static final double checkDis(StRect sourceRect,StRect tagRect,int gravity) {
+    /**
+     * 计算两点距离，带方向
+     * @param sourceRect
+     * @param tagRect
+     * @param gravity
+     * @return
+     */
+    public static final double checkDisDirection(StRect sourceRect,StRect tagRect,int gravity) {
         if (sourceRect == null || tagRect == null) return Double.MAX_VALUE;
         if (gravity== Gravity.LEFT) {
-            return Math.abs(tagRect.x - sourceRect.x);
+            return tagRect.x - sourceRect.x;
         }
         if (gravity==Gravity.RIGHT) {
-            return Math.abs(tagRect.x + tagRect.width - sourceRect.x - sourceRect.width);
+            return tagRect.x + tagRect.width - sourceRect.x - sourceRect.width;
         }
         if (gravity==Gravity.TOP) {
-            return Math.abs(tagRect.y - sourceRect.y);
+            return tagRect.y - sourceRect.y;
         }
         if (gravity==Gravity.BOTTOM) {
-            return Math.abs(tagRect.y + tagRect.height - sourceRect.y - sourceRect.height);
+            return tagRect.y + tagRect.height - sourceRect.y - sourceRect.height;
         }
         return Double.MAX_VALUE;
     }
