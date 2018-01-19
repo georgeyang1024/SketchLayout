@@ -13,6 +13,7 @@ public class DisUtil {
      * @return
      * done
      */
+    @Deprecated
     public static final double checkZeroEndDis(StArtboards artboards,StLayer stLayer) {
         if (artboards==null || stLayer==null) {
             return Double.MAX_VALUE;
@@ -37,9 +38,60 @@ public class DisUtil {
      * @param gravity
      * @return
      */
+    @Deprecated
     public static final double checkDisDirection(StLayer sourceLayer,StLayer tagLayer,int gravity) {
         if (sourceLayer == null || tagLayer == null) return Double.MAX_VALUE;
         return checkDisDirection(sourceLayer.rect,tagLayer.rect,gravity);
+    }
+
+    public static final double checkDisDirection(StLayer tagLayer,int tagGravity,StLayer sourceLayer,int sourceGravity) {
+        if (sourceLayer == null || tagLayer == null) return Double.MAX_VALUE;
+        return checkDisDirection(tagLayer.rect,tagGravity,sourceLayer.rect,sourceGravity);
+    }
+
+    /**
+     * 检测两矩形在某一方向对应边的距离
+     * @param tagRect 布局的目标
+     * @param sourceRect 布局的参考资源
+     * @param sourceGravity
+     * @param tagGravity
+     * @return
+     */
+    public static final double checkDisDirection(StRect tagRect,int tagGravity,StRect sourceRect,int sourceGravity) {
+        double ret = Double.MAX_VALUE;
+        if (tagGravity == Gravity.LEFT && sourceGravity == Gravity.LEFT) {
+            ret = tagRect.x - sourceRect.x;
+        }
+        if (tagGravity == Gravity.LEFT && sourceGravity == Gravity.RIGHT) {
+            ret = tagRect.x - sourceRect.x - sourceRect.width;
+        }
+        if (tagGravity==Gravity.RIGHT && sourceGravity == Gravity.RIGHT) {
+            //反方向
+            ret = sourceRect.x + sourceRect.width - (tagRect.x + tagRect.width);
+        }
+        if (tagGravity==Gravity.RIGHT && sourceGravity==Gravity.LEFT) {
+            //反方向
+            ret = sourceRect.x - (tagRect.x + tagRect.width);
+        }
+        if (tagGravity==Gravity.TOP && sourceGravity==Gravity.TOP) {
+            ret = tagRect.y - sourceRect.y;
+        }
+        if (tagGravity==Gravity.TOP && sourceGravity==Gravity.BOTTOM) {
+            ret = tagRect.y - sourceRect.y - sourceRect.height;
+        }
+        if (tagGravity==Gravity.BOTTOM && sourceGravity==Gravity.BOTTOM) {
+            //反方向
+            ret = sourceRect.y + sourceRect.height - (tagRect.y + tagRect.height);
+        }
+        if (tagGravity==Gravity.BOTTOM && sourceGravity==Gravity.TOP) {
+            //反方向
+            ret = sourceRect.y - (tagRect.y + tagRect.height);
+        }
+        //不允许出现负值
+        if (ret < 0) {
+            ret = Double.MAX_VALUE;
+        }
+        return ret;
     }
 
     /**

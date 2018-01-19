@@ -28,55 +28,59 @@ public class LayoutTagBuildUtil {
         return String.format( "android:background=\"#%s\"\n",Integer.toHexString(color));
     }
 
-    private static String buildViewBound(StArtboards artboards,StLayer layer,LayoutTag tag) {
-        List list = new ArrayList<String>();
-        if (tag.betterLeftLayer!=null) {
-            if (tag.betterLeftDis==0) {
-                list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.betterLeftLayer}));
-            } else if (tag.betterLeftDis>=0) {
-                list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.betterLeftLayer}));
-                list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.betterLeftDis + "px"}));
-            } else {
-                list.add(String.format("app:layout_constraintLeft_toRight=\"%s\"", new Object[]{tag.betterLeftLayer}));
-                list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.betterLeftDis + "px"}));
-            }
-        }
-
-        if (tag.betterRightLayer!=null) {
-            if (tag.betterRightDis==0) {
-                list.add(String.format("app:layout_constraintRight_toRightOf=\"%s\"", new Object[]{tag.betterRightLayer}));
-            } else if (tag.betterRightDis>=0) {
-                list.add(String.format("app:layout_constraintRight_toRightOf=\"%s\"", new Object[]{tag.betterRightLayer}));
-                list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.betterRightDis + "px"}));
-            } else {
-                list.add(String.format("app:layout_constraintRight_toLeftOf=\"%s\"", new Object[]{tag.betterRightLayer}));
-                list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.betterRightDis + "px"}));
-            }
-        }
-
-        if (tag.betterTopLayer!=null) {
-            if (tag.betterTopDis==0) {
-                list.add(String.format("app:layout_constraintTop_toTopOf=\"%s\"", new Object[]{tag.betterTopLayer}));
-            } else if (tag.betterTopDis>=0) {
-                list.add(String.format("app:layout_constraintTop_toTopOf=\"%s\"", new Object[]{tag.betterTopLayer}));
-                list.add(String.format("android:layout_marginTop=\"%s\"", new Object[]{(int) tag.betterTopDis + "px"}));
-            } else {
-                list.add(String.format("app:layout_constraintTop_toBottomOf=\"%s\"", new Object[]{tag.betterTopLayer}));
-                list.add(String.format("android:layout_marginBottom=\"%s\"", new Object[]{(int) tag.betterTopDis + "px"}));
-            }
-        }
-
-        if (tag.betterBottomLayer!=null) {
-            if (tag.betterBottomDis==0) {
-                list.add(String.format("app:layout_constraintBottom_toBottomOf=\"%s\"", new Object[]{tag.betterBottomLayer}));
-            } else if (tag.betterBottomDis>=0) {
-                list.add(String.format("app:layout_constraintBottom_toBottomOf=\"%s\"", new Object[]{tag.betterBottomLayer}));
-                list.add(String.format("android:layout_marginBottom=\"%s\"", new Object[]{(int) tag.betterBottomDis + "px"}));
-            } else {
-                list.add(String.format("app:layout_constraintBottom_toTopOf=\"%s\"", new Object[]{tag.betterBottomLayer}));
-                list.add(String.format("android:layout_marginTop=\"%s\"", new Object[]{(int) tag.betterBottomDis + "px"}));
-            }
-        }
+//    private static String buildViewBound(StArtboards artboards,StLayer layer,LayoutTag tag) {
+//        List list = new ArrayList<String>();
+//        if (tag.betterLeftLayer!=null) {
+//            if (tag.betterLeftDis==0) {
+//                list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.betterLeftLayer}));
+//            } else if (tag.betterLeftDis<=0) {
+//                list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.betterLeftLayer}));
+//                list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.betterLeftDis + "px"}));
+//            } else {
+//                //1.4更正，未测试
+//                list.add(String.format("app:layout_constraintRight_toLeftOf=\"%s\"", new Object[]{tag.betterLeftLayer}));
+//                list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.betterLeftDis + "px"}));
+//            }
+//        }
+//
+//        if (tag.betterRightLayer!=null) {
+//            if (tag.betterRightDis==0) {
+//                list.add(String.format("app:layout_constraintRight_toRightOf=\"%s\"", new Object[]{tag.betterRightLayer}));
+//            } else if (tag.betterRightDis>=0) {
+//                //1.4更正
+//                list.add(String.format("app:layout_constraintRight_toRightOf=\"%s\"", new Object[]{tag.betterRightLayer}));
+//                list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.betterRightDis + "px"}));
+//            } else {
+//                //1.4更正
+//                list.add(String.format("app:layout_constraintLeft_toRightOf=\"%s\"", new Object[]{tag.betterRightLayer}));
+//                list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.betterRightDis + "px"}));
+//            }
+//        }
+//
+//        if (tag.betterTopLayer!=null) {
+//            if (tag.betterTopDis==0) {
+//                list.add(String.format("app:layout_constraintTop_toTopOf=\"%s\"", new Object[]{tag.betterTopLayer}));
+//            } else if (tag.betterTopDis>=0) {
+//                list.add(String.format("app:layout_constraintTop_toBottomOf=\"%s\"", new Object[]{tag.betterTopLayer}));
+//                list.add(String.format("android:layout_marginBottom=\"%s\"", new Object[]{(int) tag.betterTopDis + "px"}));
+//            } else {
+//                //1.4日更正
+//                list.add(String.format("app:layout_constraintTop_toTopOf=\"%s\"", new Object[]{tag.betterTopLayer}));
+//                list.add(String.format("android:layout_marginTop=\"%s\"", new Object[]{(int) -tag.betterTopDis + "px"}));
+//            }
+//        }
+//
+//        if (tag.betterBottomLayer!=null) {
+//            if (tag.betterBottomDis==0) {
+//                list.add(String.format("app:layout_constraintBottom_toBottomOf=\"%s\"", new Object[]{tag.betterBottomLayer}));
+//            } else if (tag.betterBottomDis>=0) {
+//                list.add(String.format("app:layout_constraintBottom_toBottomOf=\"%s\"", new Object[]{tag.betterBottomLayer}));
+//                list.add(String.format("android:layout_marginBottom=\"%s\"", new Object[]{(int) tag.betterBottomDis + "px"}));
+//            } else {
+//                list.add(String.format("app:layout_constraintBottom_toTopOf=\"%s\"", new Object[]{tag.betterBottomLayer}));
+//                list.add(String.format("android:layout_marginTop=\"%s\"", new Object[]{(int) tag.betterBottomDis + "px"}));
+//            }
+//        }
 
 
 //        if (tag.outLayer==null) {
@@ -149,8 +153,8 @@ public class LayoutTagBuildUtil {
 //                list.add(String.format("android:layout_marginTop=\"%s\"\n",new Object[]{(int)(tag.bottomDis-layer.rect.height) + "px"}));
 //            }
 //        }
-        return TextUtils.join("\n",list.toArray(new String[list.size()]));
-    }
+//        return TextUtils.join("\n",list.toArray(new String[list.size()]));
+//    }
 
     private static String buildTextViewHeader(StArtboards artboards,StLayer layer,LayoutTag tag) {
         String id =  PinyinUtil.getPinyinName(layer.name);
@@ -172,209 +176,271 @@ public class LayoutTagBuildUtil {
         return stringBuffer.toString();
     }
 
-    /**
-     * 二次定位，所有情况
-     * 通用定位
-     * @param artboards
-     * @param layer
-     * @param tag
-     */
-    private static void alignmentLayout(StArtboards artboards,StLayer rootLayer,StLayer layer,LayoutTag tag) {
-        //左右定位
-        if (tag.leftLayer==null && tag.rightLayer==null) {
-            //左右都没找到最近元素，使用父类
-            double tempParentLeftDis = DisUtil.checkDisDirection(tag.source, rootLayer, Gravity.LEFT);
-            double tempParentRightDis = DisUtil.checkDisDirection(layer, rootLayer, Gravity.RIGHT);
-            if (Math.abs(tempParentLeftDis) <= Math.abs(tempParentRightDis)) {
-                tag.betterLeftLayer = rootLayer;
-                tag.betterLeftDis = tempParentLeftDis;
-            } else {
-                tag.betterRightLayer = rootLayer;
-                tag.betterRightDis = tempParentRightDis;
+
+    private static String buildViewBound (StArtboards artboards,StLayer layer,LayoutTag tag) {
+        List list = new ArrayList<String>();
+        if (tag.leftRightEq) {
+            list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.leftToLeftLayer}));
+            list.add(String.format("app:layout_constraintRight_toLeftOf=\"%s\"", new Object[]{tag.rightToRightLayer}));
+        } else if (tag.leftMinThanRight) {
+            if (tag.useLeftLayer==tag.leftToLeftLayer) {
+                list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.useLeftLayer}));
+                list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.leftToLeftDis + "px"}));
+            } else if (tag.useLeftLayer==tag.leftToRightLayer) {
+                //TODO ?? how?
+                list.add(String.format("app:layout_constraintLeft_toRightOf=\"%s\"", new Object[]{tag.useLeftLayer}));
+                list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.leftToLeftDis + "px"}));
             }
-        } else if (tag.leftLayer == tag.rightLayer && Math.abs(tag.leftDis)-Math.abs(tag.rightDis)<=2) {
-            //左右距离一样，且，都是同一个元素，即是居中
-            tag.betterLeftLayer = tag.leftLayer;
-            tag.betterRightLayer = tag.rightLayer;
-        } else if (tag.leftLayer == tag.rightLayer) {
-            //左右元素一样，但是不居中,选一个最佳
-            if (tag.outLayer==null) {
-                double tempLeftDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.LEFT);
-                double tempRightDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.RIGHT);
-                if (Math.abs(tempLeftDis)<=Math.abs(tempRightDis)) {
-                    tag.betterLeftLayer = rootLayer;
-                    tag.betterLeftDis = tempLeftDis;
-                } else {
-                    tag.betterRightLayer = rootLayer;
-                    tag.betterRightDis = tempRightDis;
-                }
-            } else {
-                double tempLeftDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.LEFT);
-                double tempRightDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.RIGHT);
-                if (Math.abs(tempLeftDis)<=Math.abs(tempRightDis)) {
-                    tag.betterLeftLayer = tag.outLayer;
-                    tag.betterLeftDis = tempLeftDis;
-                } else {
-                    tag.betterRightLayer = tag.outLayer;
-                    tag.betterRightDis = tempRightDis;
-                }
+        } else if (tag.rightMinThanLeft) {
+            if (tag.useRightLayer==tag.rightToRightLayer) {
+                list.add(String.format("app:layout_constraintRight_toRightOf=\"%s\"", new Object[]{tag.useRightLayer}));
+                list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.rightToRightDis + "px"}));
+            } else if (tag.useRightLayer==tag.rightToLeftLayer) {
+                list.add(String.format("app:layout_constraintRight_toLeftOf=\"%s\"", new Object[]{tag.useRightLayer}));
+                list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.rightToRightDis + "px"}));
             }
-        } else if (tag.leftLayer != null && tag.rightLayer==null) {
-            //左右只有一个左元素
-            if (tag.outLayer==null) {
-                double tempLeftDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.LEFT);
-                tag.betterLeftLayer = tag.outLayer;
-                tag.betterLeftDis = tempLeftDis;
-            } else {
-                double tempLeftDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.LEFT);
-                if (Math.abs(tag.leftDis)<=Math.abs(tempLeftDis)) {
-                    tag.betterLeftLayer = tag.leftLayer;
-                    tag.betterLeftDis = tag.leftDis;
-                } else {
-                    tag.betterLeftLayer = tag.outLayer;
-                    tag.betterLeftDis = tempLeftDis;
-                }
+        }
+        if (tag.topBottomEq) {
+            list.add(String.format("app:layout_constraintTop_toTopOf=\"%s\"", new Object[]{tag.topToTopLayer}));
+            list.add(String.format("app:layout_constraintBottom_toBottomOf=\"%s\"", new Object[]{tag.bottomToBottomLayer}));
+        } else if (tag.topMinThanBottom) {
+            if (tag.useTopLayer==tag.topToTopLayer) {
+                list.add(String.format("app:layout_constraintTop_toTopOf=\"%s\"", new Object[]{tag.useTopLayer}));
+                list.add(String.format("android:layout_marginTop=\"%s\"", new Object[]{(int) tag.topToTopDis + "px"}));
+            } else if (tag.useTopLayer==tag.topToBottomLayer) {
+                list.add(String.format("app:layout_constraintTop_toBottomOf=\"%s\"", new Object[]{tag.useTopLayer}));
+                list.add(String.format("android:layout_marginTop=\"%s\"", new Object[]{(int) tag.topToBottomDis + "px"}));
             }
-        } else if (tag.rightLayer != null && tag.leftLayer==null) {
-            //左右只有一个右元素
-            if (tag.outLayer==null) {
-                double tempRightDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.RIGHT);
-                tag.betterRightLayer = tag.outLayer;
-                tag.betterRightDis = tempRightDis;
-            } else {
-                double tempRightDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.RIGHT);
-                if (Math.abs(tag.rightDis)<=Math.abs(tempRightDis)) {
-                    tag.betterRightLayer = tag.rightLayer;
-                    tag.betterRightDis = tag.rightDis;
-                } else {
-                    tag.betterRightLayer = tag.outLayer;
-                    tag.betterRightDis = tempRightDis;
-                }
+        } else if (tag.bottomMinThanTop) {
+            if (tag.useBottomLayer==tag.bottomToBottomLayer) {
+                list.add(String.format("app:layout_constraintBottom_toBottomOf=\"%s\"",new Object[]{tag.useBottomLayer}));
+                list.add(String.format("android:layout_marginBottom=\"%s\"\n",new Object[]{(int)(tag.bottomToBottomDis) + "px"}));
+            } else if (tag.useBottomLayer == tag.bottomToTopLayer) {
+                list.add(String.format("app:layout_constraintBottom_toTopOf=\"%s\"",new Object[]{tag.useBottomLayer}));
+                list.add(String.format("android:layout_marginBottom=\"%s\"\n",new Object[]{(int)(tag.bottomToTopDis) + "px"}));
             }
-        } else if (tag.leftLayer!=tag.rightLayer){
-            //最后一种情况，左右均不为空，且不相同
-            //此时，如果有外围元素，参考外围元素最近的点，没有的话，取找到的最近的点
-            if (tag.outLayer==null) {
-                if (Math.abs(tag.leftDis)<=Math.abs(tag.rightDis)) {
-                    tag.betterLeftLayer = tag.leftLayer;
-                    tag.betterLeftDis = tag.leftDis;
-                } else {
-                    tag.betterRightLayer = tag.rightLayer;
-                    tag.betterRightDis = tag.rightDis;
-                }
-            } else {
-                double tempLeftDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.LEFT);
-                double tempRightDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.RIGHT);
-                if (Math.abs(tempLeftDis)<=Math.abs(tempRightDis)) {
-                    tag.betterLeftLayer = tag.outLayer;
-                    tag.betterLeftDis = tempLeftDis;
-                } else {
-                    tag.betterRightLayer = tag.outLayer;
-                    tag.betterRightDis = tempRightDis;
-                }
-            }
-        } else {
-            Log.d("test","error");
         }
 
-
-        //上下定位
-        if (tag.topLayer==null && tag.bottomLayer==null) {
-            //左右都没找到最近元素，使用父类
-            double tempParentTopDis = DisUtil.checkDisDirection(tag.source, rootLayer, Gravity.TOP);
-            double tempParentBottomDis = DisUtil.checkDisDirection(layer, rootLayer, Gravity.BOTTOM);
-            if (Math.abs(tempParentTopDis) <= Math.abs(tempParentBottomDis)) {
-                tag.betterTopLayer = rootLayer;
-                tag.betterTopDis = tempParentTopDis;
-            } else {
-                tag.betterBottomLayer = rootLayer;
-                tag.betterBottomDis = tempParentBottomDis;
-            }
-        } else if (tag.topLayer == tag.bottomLayer && Math.abs(tag.topDis)-Math.abs(tag.bottomDis)<=2) {
-            //上下距离一样，且，都是同一个元素，即是居中
-            tag.betterTopLayer = tag.topLayer;
-            tag.betterBottomLayer = tag.bottomLayer;
-        } else if (tag.topLayer == tag.bottomLayer) {
-            //左右元素一样，但是不居中,选一个最佳
-            if (tag.outLayer==null) {
-                double tempTopDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.TOP);
-                double tempBottomDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.BOTTOM);
-                if (Math.abs(tempTopDis) <= Math.abs(tempBottomDis)) {
-                    tag.betterTopLayer = rootLayer;
-                    tag.betterTopDis = tempTopDis;
-                } else {
-                    tag.betterBottomLayer = rootLayer;
-                    tag.betterBottomDis = tempBottomDis;
-                }
-            } else {
-                double tempTopDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.TOP);
-                double tempBottomDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.BOTTOM);
-                if (Math.abs(tempTopDis)<=Math.abs(tempBottomDis)) {
-                    tag.betterTopLayer = tag.outLayer;
-                    tag.betterTopDis = tempTopDis;
-                } else {
-                    tag.betterBottomLayer = tag.outLayer;
-                    tag.betterBottomDis = tempBottomDis;
-                }
-            }
-        } else if (tag.topLayer != null && tag.bottomLayer==null) {
-            //左右只有一个左元素
-            if (tag.outLayer==null) {
-                double tempTopDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.TOP);
-                tag.betterTopLayer = rootLayer;
-                tag.betterTopDis = tempTopDis;
-            } else {
-                double tempTopDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.TOP);
-                if (Math.abs(tag.topDis)<=Math.abs(tempTopDis)) {
-                    tag.betterTopLayer = tag.topLayer;
-                    tag.betterTopDis = tag.topDis;
-                } else {
-                    tag.betterTopLayer = tag.outLayer;
-                    tag.betterTopDis = tempTopDis;
-                }
-            }
-        } else if (tag.bottomLayer != null && tag.topLayer==null) {
-            //左右只有一个右元素
-            if (tag.outLayer==null) {
-                double tempBottomDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.BOTTOM);
-                tag.betterBottomLayer = tag.outLayer;
-                tag.betterBottomDis = tempBottomDis;
-            } else {
-                double tempBottomDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.BOTTOM);
-                if (Math.abs(tag.bottomDis)<=Math.abs(tempBottomDis)) {
-                    tag.betterBottomLayer = tag.bottomLayer;
-                    tag.betterBottomDis = tag.bottomDis;
-                } else {
-                    tag.betterBottomLayer = tag.outLayer;
-                    tag.betterBottomDis = tempBottomDis;
-                }
-            }
-        } else if (tag.topLayer!=tag.bottomLayer){
-            //最后一种情况，左右均不为空，且不相同
-            //此时，如果有外围元素，参考外围元素最近的点，没有的话，取找到的最近的点
-            if (tag.outLayer==null) {
-                if (Math.abs(tag.topDis)<=Math.abs(tag.bottomDis)) {
-                    tag.betterTopLayer = tag.topLayer;
-                    tag.betterTopDis = tag.topDis;
-                } else {
-                    tag.betterBottomLayer = tag.bottomLayer;
-                    tag.betterBottomDis = tag.bottomDis;
-                }
-            } else {
-                double tempTopDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.TOP);
-                double tempBottomDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.BOTTOM);
-                if (Math.abs(tempTopDis)<=Math.abs(tempBottomDis)) {
-                    tag.betterTopLayer = tag.outLayer;
-                    tag.betterTopDis = tempTopDis;
-                } else {
-                    tag.betterBottomLayer = tag.outLayer;
-                    tag.betterBottomDis = tempBottomDis;
-                }
-            }
-        } else {
-            Log.d("test","error");
-        }
+        return TextUtils.join("\n",list.toArray(new String[list.size()]));
     }
+
+
+//    /**
+//     * 二次定位，所有情况
+//     * 通用定位
+//     * @param artboards
+//     * @param layer
+//     * @param tag
+//     */
+//    private static void alignmentLayout(StArtboards artboards,StLayer rootLayer,StLayer layer,LayoutTag tag) {
+//        //左右定位
+//        if (tag.leftLayer==null && tag.rightLayer==null) {
+//            Log.d("test","##0");
+//            //左右都没找到最近元素，使用父类
+//            double tempParentLeftDis = DisUtil.checkDisDirection(tag.source, rootLayer, Gravity.LEFT);
+//            double tempParentRightDis = DisUtil.checkDisDirection(layer, rootLayer, Gravity.RIGHT);
+//            if (Math.abs(Math.abs(tempParentLeftDis)- Math.abs(tempParentRightDis)) <= 2) {
+//                //1.4更正
+//                //左右距离一样，且，都是同一个元素，即是居中
+//                tag.betterLeftLayer = rootLayer;
+//                tag.betterRightLayer = rootLayer;
+//            } else if (Math.abs(tempParentLeftDis) < Math.abs(tempParentRightDis)) {
+//                tag.betterLeftLayer = rootLayer;
+//                tag.betterLeftDis = tempParentLeftDis;
+//            } else {
+//                tag.betterRightLayer = rootLayer;
+//                tag.betterRightDis = tempParentRightDis;
+//            }
+//        } else if (tag.leftLayer == tag.rightLayer && Math.abs(Math.abs(tag.leftDis)-Math.abs(tag.rightDis))<=2) {
+//            Log.d("test","##1");
+//            //左右距离一样，且，都是同一个元素，即是居中
+//            tag.betterLeftLayer = tag.leftLayer;
+//            tag.betterRightLayer = tag.rightLayer;
+//        } else if (tag.leftLayer == tag.rightLayer) {
+//            Log.d("test","##2");
+//            //左右元素一样，但是不居中,选一个最佳
+//            if (tag.outLayer==null) {
+//                Log.d("test","##21");
+//                double tempLeftDis = DisUtil.checkDisDirection(layer,tag.leftLayer, Gravity.LEFT);
+//                double tempRightDis = DisUtil.checkDisDirection(layer,tag.rightLayer, Gravity.RIGHT);
+//                if (Math.abs(tempLeftDis)<=Math.abs(tempRightDis)) {
+//                    tag.betterLeftLayer = tag.leftLayer;
+//                    tag.betterLeftDis = tempLeftDis;
+//                } else {
+//                    tag.betterRightLayer = tag.rightLayer;
+//                    tag.betterRightDis = tempRightDis;
+//                }
+//            } else {
+//                Log.d("test","##22");
+//                double tempLeftDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.LEFT);
+//                double tempRightDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.RIGHT);
+//                if (Math.abs(tempLeftDis)<=Math.abs(tempRightDis)) {
+//                    tag.betterLeftLayer = tag.outLayer;
+//                    tag.betterLeftDis = tempLeftDis;
+//                } else {
+//                    tag.betterRightLayer = tag.outLayer;
+//                    tag.betterRightDis = tempRightDis;
+//                }
+//            }
+//        } else if (tag.leftLayer != null && tag.rightLayer==null) {
+//            Log.d("test","##3");
+//            //左右只有一个左元素
+//            if (tag.outLayer==null) {
+//                double tempLeftDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.LEFT);
+//                tag.betterLeftLayer = tag.outLayer;
+//                tag.betterLeftDis = tempLeftDis;
+//            } else {
+//                double tempLeftDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.LEFT);
+//                if (Math.abs(tag.leftDis)<=Math.abs(tempLeftDis)) {
+//                    tag.betterLeftLayer = tag.leftLayer;
+//                    tag.betterLeftDis = tag.leftDis;
+//                } else {
+//                    tag.betterLeftLayer = tag.outLayer;
+//                    tag.betterLeftDis = tempLeftDis;
+//                }
+//            }
+//        } else if (tag.rightLayer != null && tag.leftLayer==null) {
+//            Log.d("test","##4");
+//            //左右只有一个右元素
+//            if (tag.outLayer==null) {
+//                double tempRightDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.RIGHT);
+//                tag.betterRightLayer = tag.outLayer;
+//                tag.betterRightDis = tempRightDis;
+//            } else {
+//                double tempRightDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.RIGHT);
+//                if (Math.abs(tag.rightDis)<=Math.abs(tempRightDis)) {
+//                    tag.betterRightLayer = tag.rightLayer;
+//                    tag.betterRightDis = tag.rightDis;
+//                } else {
+//                    tag.betterRightLayer = tag.outLayer;
+//                    tag.betterRightDis = tempRightDis;
+//                }
+//            }
+//        } else if (tag.leftLayer!=tag.rightLayer){
+//            Log.d("test","##5");
+//            //最后一种情况，左右均不为空，且不相同
+//            //此时，如果有外围元素，参考外围元素最近的点，没有的话，取找到的最近的点
+//            if (tag.outLayer==null) {
+//                if (Math.abs(tag.leftDis)<=Math.abs(tag.rightDis)) {
+//                    tag.betterLeftLayer = tag.leftLayer;
+//                    tag.betterLeftDis = tag.leftDis;
+//                } else {
+//                    tag.betterRightLayer = tag.rightLayer;
+//                    tag.betterRightDis = tag.rightDis;
+//                }
+//            } else {
+//                double tempLeftDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.LEFT);
+//                double tempRightDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.RIGHT);
+//                if (Math.abs(tempLeftDis)<=Math.abs(tempRightDis)) {
+//                    tag.betterLeftLayer = tag.outLayer;
+//                    tag.betterLeftDis = tempLeftDis;
+//                } else {
+//                    tag.betterRightLayer = tag.outLayer;
+//                    tag.betterRightDis = tempRightDis;
+//                }
+//            }
+//        } else {
+//            Log.d("test","error");
+//        }
+//
+//
+//        //上下定位
+//        if (tag.topLayer==null && tag.bottomLayer==null) {
+//            //左右都没找到最近元素，使用父类
+//            double tempParentTopDis = DisUtil.checkDisDirection(tag.source, rootLayer, Gravity.TOP);
+//            double tempParentBottomDis = DisUtil.checkDisDirection(layer, rootLayer, Gravity.BOTTOM);
+//            if (Math.abs(tempParentTopDis) <= Math.abs(tempParentBottomDis)) {
+//                tag.betterTopLayer = rootLayer;
+//                tag.betterTopDis = tempParentTopDis;
+//            } else {
+//                tag.betterBottomLayer = rootLayer;
+//                tag.betterBottomDis = tempParentBottomDis;
+//            }
+//        } else if (tag.topLayer == tag.bottomLayer && Math.abs(tag.topDis-tag.bottomDis)<=2) {
+//            //上下距离一样，且，都是同一个元素，即是居中
+//            tag.betterTopLayer = tag.topLayer;
+//            tag.betterBottomLayer = tag.bottomLayer;
+//        } else if (tag.topLayer == tag.bottomLayer) {
+//            //左右元素一样，但是不居中,选一个最佳
+//            if (tag.outLayer==null) {
+//                double tempTopDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.TOP);
+//                double tempBottomDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.BOTTOM);
+//                if (Math.abs(tempTopDis) <= Math.abs(tempBottomDis)) {
+//                    tag.betterTopLayer = rootLayer;
+//                    tag.betterTopDis = tempTopDis;
+//                } else {
+//                    tag.betterBottomLayer = rootLayer;
+//                    tag.betterBottomDis = tempBottomDis;
+//                }
+//            } else {
+//                double tempTopDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.TOP);
+//                double tempBottomDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.BOTTOM);
+//                if (Math.abs(tempTopDis)<=Math.abs(tempBottomDis)) {
+//                    tag.betterTopLayer = tag.outLayer;
+//                    tag.betterTopDis = tempTopDis;
+//                } else {
+//                    tag.betterBottomLayer = tag.outLayer;
+//                    tag.betterBottomDis = tempBottomDis;
+//                }
+//            }
+//        } else if (tag.topLayer != null && tag.bottomLayer==null) {
+//            //左右只有一个左元素
+//            if (tag.outLayer==null) {
+//                double tempTopDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.TOP);
+//                tag.betterTopLayer = rootLayer;
+//                tag.betterTopDis = tempTopDis;
+//            } else {
+//                double tempTopDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.TOP);
+//                if (Math.abs(tag.topDis)<=Math.abs(tempTopDis)) {
+//                    tag.betterTopLayer = tag.topLayer;
+//                    tag.betterTopDis = tag.topDis;
+//                } else {
+//                    tag.betterTopLayer = tag.outLayer;
+//                    tag.betterTopDis = tempTopDis;
+//                }
+//            }
+//        } else if (tag.bottomLayer != null && tag.topLayer==null) {
+//            //左右只有一个右元素
+//            if (tag.outLayer==null) {
+//                double tempBottomDis = DisUtil.checkDisDirection(layer,rootLayer, Gravity.BOTTOM);
+//                tag.betterBottomLayer = tag.outLayer;
+//                tag.betterBottomDis = tempBottomDis;
+//            } else {
+//                double tempBottomDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.BOTTOM);
+//                if (Math.abs(tag.bottomDis)<=Math.abs(tempBottomDis)) {
+//                    tag.betterBottomLayer = tag.bottomLayer;
+//                    tag.betterBottomDis = tag.bottomDis;
+//                } else {
+//                    tag.betterBottomLayer = tag.outLayer;
+//                    tag.betterBottomDis = tempBottomDis;
+//                }
+//            }
+//        } else if (tag.topLayer!=tag.bottomLayer){
+//            //最后一种情况，左右均不为空，且不相同
+//            //此时，如果有外围元素，参考外围元素最近的点，没有的话，取找到的最近的点
+//            if (tag.outLayer==null) {
+//                if (Math.abs(tag.topDis)<=Math.abs(tag.bottomDis)) {
+//                    tag.betterTopLayer = tag.topLayer;
+//                    tag.betterTopDis = tag.topDis;
+//                } else {
+//                    tag.betterBottomLayer = tag.bottomLayer;
+//                    tag.betterBottomDis = tag.bottomDis;
+//                }
+//            } else {
+//                double tempTopDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.TOP);
+//                double tempBottomDis = DisUtil.checkDisDirection(layer,tag.outLayer, Gravity.BOTTOM);
+//                if (Math.abs(tempTopDis)<=Math.abs(tempBottomDis)) {
+//                    tag.betterTopLayer = tag.outLayer;
+//                    tag.betterTopDis = tempTopDis;
+//                } else {
+//                    tag.betterBottomLayer = tag.outLayer;
+//                    tag.betterBottomDis = tempBottomDis;
+//                }
+//            }
+//        } else {
+//            Log.d("test","error");
+//        }
+//    }
 
     /**
      * 一次定位好LayoutTag位置后，调用此方法生成背景，写入文字之类的操作
@@ -383,8 +449,8 @@ public class LayoutTagBuildUtil {
         Log.d("test","====================generatedLayout====================");
         Log.d("test","layer:" + layer);
         Log.d("test","tag:" + tag);
-        alignmentLayout(artboards,rootLayer,layer,tag);
-        Log.d("test","alignmentLayout:"  + tag);
+//        alignmentLayout(artboards,rootLayer,layer,tag);
+//        Log.d("test","alignmentLayout:"  + tag);
         String xml = buildView(artboards,layer,tag);
         Log.d("test",xml);
 

@@ -9,36 +9,61 @@ public class LayoutTag {
     public StLayer source;//自身资源
     public StLayer outLayer;//外围参考的元素
 
-    //第一次寻找到最近的元素
-    public StLayer leftLayer;//layout_constraintLeft_toLeftOf对应的id,如果0，则表示父类
-    public StLayer rightLayer,topLayer,bottomLayer;
-    public double leftDis,rightDis,topDis,bottomDis;
 
-    //转成布局字符串前，对比父类外围元素，找到各个位置的最佳参考元素
-    public StLayer betterLeftLayer,betterRightLayer,betterTopLayer,betterBottomLayer;
-    public double betterLeftDis,betterRightDis,betterTopDis,betterBottomDis;
+    public StLayer leftToRightLayer;//当前矩形，最近那个矩形的右边
+    public StLayer leftToLeftLayer;
+    public StLayer rightToLeftLayer;
+    public StLayer rightToRightLayer;
+
+    public StLayer topToTopLayer;
+    public StLayer topToBottomLayer;
+    public StLayer bottomToTopLayer;
+    public StLayer bottomToBottomLayer;
+
+    public double leftToLeftDis = 0,leftToRightDis = 0,rightToRightDis = 0,rightToLeftDis = 0;
+    public double topToTopDis = 0,topToBottomDis = 0,bottomToBottomDis = 0,bottomToTopDis = 0;
+
+    public boolean leftMinThanRight;
+    public boolean leftRightEq;
+    public boolean rightMinThanLeft;
+
+    public boolean topMinThanBottom;
+    public boolean topBottomEq;
+    public boolean bottomMinThanTop;
+
+    public StLayer useLeftLayer,useRightLayer,useTopLayer,useBottomLayer;
 
     @Override
     public String toString() {
         return "LayoutTag{" +
                 "source=" + source +
                 ", outLayer=" + outLayer +
-                ", leftLayer=" + leftLayer +
-                ", rightLayer=" + rightLayer +
-                ", topLayer=" + topLayer +
-                ", bottomLayer=" + bottomLayer +
-                ", leftDis=" + leftDis +
-                ", rightDis=" + rightDis +
-                ", topDis=" + topDis +
-                ", bottomDis=" + bottomDis +
-                ", betterLeftLayer=" + betterLeftLayer +
-                ", betterRightLayer=" + betterRightLayer +
-                ", betterTopLayer=" + betterTopLayer +
-                ", betterBottomLayer=" + betterBottomLayer +
-                ", betterLeftDis=" + betterLeftDis +
-                ", betterRightDis=" + betterRightDis +
-                ", betterTopDis=" + betterTopDis +
-                ", betterBottomDis=" + betterBottomDis +
+                ", leftToRightLayer=" + leftToRightLayer +
+                ", leftToLeftLayer=" + leftToLeftLayer +
+                ", rightToLeftLayer=" + rightToLeftLayer +
+                ", rightToRightLayer=" + rightToRightLayer +
+                ", topToTopLayer=" + topToTopLayer +
+                ", topToBottomLayer=" + topToBottomLayer +
+                ", bottomToTopLayer=" + bottomToTopLayer +
+                ", bottomToBottomLayer=" + bottomToBottomLayer +
+                ", leftToLeftDis=" + leftToLeftDis +
+                ", leftToRightDis=" + leftToRightDis +
+                ", rightToRightDis=" + rightToRightDis +
+                ", rightToLeftDis=" + rightToLeftDis +
+                ", topToTopDis=" + topToTopDis +
+                ", topToBottomDis=" + topToBottomDis +
+                ", bottomToBottomDis=" + bottomToBottomDis +
+                ", bottomToTopDis=" + bottomToTopDis +
+                ", leftMinThanRight=" + leftMinThanRight +
+                ", leftRightEq=" + leftRightEq +
+                ", rightMinThanLeft=" + rightMinThanLeft +
+                ", topMinThanBottom=" + topMinThanBottom +
+                ", topBottomEq=" + topBottomEq +
+                ", bottomMinThanTop=" + bottomMinThanTop +
+                ", useLeftLayer=" + useLeftLayer +
+                ", useRightLayer=" + useRightLayer +
+                ", useTopLayer=" + useTopLayer +
+                ", useBottomLayer=" + useBottomLayer +
                 '}';
     }
 }
