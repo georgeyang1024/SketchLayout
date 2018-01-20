@@ -9,13 +9,15 @@ import java.util.regex.Pattern;
  */
 
 public class PinyinUtil {
+    private static final HanyuPinyinHelper hanyuPinyinHelper = new HanyuPinyinHelper();
     public static String getPinyinName(String source) {
-        ArrayList<HanziToPinyin.Token> tokens = HanziToPinyin.getInstance().get(source);
-        StringBuffer stringBuffer = new StringBuffer();
-        for (HanziToPinyin.Token token : tokens) {
-            stringBuffer.append(token.target);
-        }
-        return getName(stringBuffer.toString());
+//        ArrayList<HanziToPinyin.Token> tokens = HanziToPinyin.getInstance().get(source);
+//        StringBuffer stringBuffer = new StringBuffer();
+//        for (HanziToPinyin.Token token : tokens) {
+//            stringBuffer.append(token.target);
+//        }
+//        return getName(stringBuffer.toString());
+        return getName(hanyuPinyinHelper.toHanyuPinyin(source));
     }
 
     public static boolean isChinese(String str) {

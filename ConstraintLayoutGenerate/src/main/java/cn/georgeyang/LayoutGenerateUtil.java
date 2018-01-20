@@ -37,7 +37,7 @@ public class LayoutGenerateUtil {
         new LayoutGenerateUtil().show();
     }
 
-    int showIndex = 4;//登录页
+    int showIndex = 0;//登录页
     public void show() {
         try {
             //3.0设计/登录注册/index.html#artboard9
@@ -87,7 +87,7 @@ public class LayoutGenerateUtil {
         orderFindList(artboards,filterLayer);
         System.out.println("orderFindList:" + Arrays.asList(filterLayer));
         List<LayoutTag> layoutTagList = parseLayoutTags(artboards,filterLayer);
-        System.out.println("layoutTagList:" + Arrays.asList(layoutTagList));
+//        System.out.println("layoutTagList:" + Arrays.asList(layoutTagList));
     }
 
     /**
@@ -359,6 +359,18 @@ public class LayoutGenerateUtil {
             layoutTags.add(layoutTag);
         }
         System.out.println(xmlBuffer.toString());
+        FileWriter writer=new FileWriter("result.xml");
+        writer.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                "<android.support.constraint.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
+                "                                             xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n" +
+                "                                             xmlns:tools=\"http://schemas.android.com/tools\"\n" +
+                "                                             android:layout_width=\"750px\"\n" +
+                "                                             android:layout_height=\"1134px\"\n" +
+                "    android:background=\"@color/colorAccent\"\n" +
+                "                             >");
+        writer.write(xmlBuffer.toString());
+        writer.write("</android.support.constraint.ConstraintLayout>");
+        writer.close();
         return layoutTags;
     }
 

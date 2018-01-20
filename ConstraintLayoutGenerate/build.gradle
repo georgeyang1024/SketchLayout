@@ -3,6 +3,7 @@ apply plugin: 'java'
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('lib/gson-2.2.2.jar')
+    compile files('lib/pinyin4j-2.5.0.jar')
 }
 
 tasks.withType(JavaCompile) {

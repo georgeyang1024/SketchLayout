@@ -38,10 +38,18 @@ public class StLayer {
         } else {
             viewId =  PinyinUtil.getName(name);
         }
+        try {
+            Integer.valueOf(viewId.substring(0,1));
+            viewId = "id" + viewId;
+        } catch (Exception e) {
+
+        }
         if (TextUtils.isEmpty(viewId)) {
             viewId = PinyinUtil.getName("id_" + objectID.hashCode());
         }
-        return  viewId;
+        return  viewId.replace("(","").replace("(","").replace("?","")
+                .replace("、","").replace("）","").replace("（","").replace(",","")
+                .replace("，","").replace(".","").replace("？","");
     }
 
 }
