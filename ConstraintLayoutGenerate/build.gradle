@@ -1,0 +1,17 @@
+apply plugin: 'java'
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('lib/gson-2.2.2.jar')
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+task runJava(type: JavaExec, dependsOn: 'classes') {
+    main = 'cn.georgeyang.LayoutGenerateUtil'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+defaultTasks 'runJava'

@@ -1,13 +1,12 @@
-package com.lvshou.sketchlayout;
-
-import android.graphics.Color;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
+package cn.georgeyang.util;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import cn.georgeyang.bean.LayoutTag;
+import cn.georgeyang.bean.StArtboards;
+import cn.georgeyang.bean.StLayer;
 
 /**
  * 将Layer转成LayoutTag
@@ -24,7 +23,7 @@ public class LayoutTagBuildUtil {
             "        android:text=\"%s\"\n" +
             "        android:textColor=\"%s\"\n";
 
-    private static String buildViewBackground(StArtboards artboards,StLayer layer,LayoutTag tag) {
+    private static String buildViewBackground(StArtboards artboards, StLayer layer, LayoutTag tag) {
         String color;
         if (layer==null || layer.borders==null || layer.borders.isEmpty() || layer.borders.get(0).color==null || TextUtils.isEmpty(layer.borders.get(0).color.argb_hex)) {
             color = "#" + Integer.toHexString(Color.argb(255,random.nextInt(255),random.nextInt(255),random.nextInt(255)));
@@ -177,9 +176,9 @@ public class LayoutTagBuildUtil {
                 TextUtils.isEmpty(layer.content)?id:layer.content,
                 color
         };
-        if ("denglu".equalsIgnoreCase(layer.getViewId())) {
-            Log.d("test","c:" + color);
-        }
+//        if ("denglu".equalsIgnoreCase(layer.getViewId())) {
+//            Log.d("test","c:" + color);
+//        }
         return String.format(templateTextView,params);
     }
 
@@ -258,7 +257,7 @@ public class LayoutTagBuildUtil {
             }
         }
 
-        return TextUtils.join("\n",list.toArray(new String[list.size()]));
+        return TextUtils.join("\n",list);
     }
 
 
@@ -483,13 +482,13 @@ public class LayoutTagBuildUtil {
      * 一次定位好LayoutTag位置后，调用此方法生成背景，写入文字之类的操作
      */
     public static String generatedLayout(StArtboards artboards,StLayer rootLayer,StLayer layer,LayoutTag tag) {
-        Log.d("test","====================generatedLayout====================");
-        Log.d("test","layer:" + layer);
-        Log.d("test","tag:" + tag);
+        System.out.println("====================generatedLayout====================");
+        System.out.println("layer:" + layer);
+        System.out.println("tag:" + tag);
 //        alignmentLayout(artboards,rootLayer,layer,tag);
 //        Log.d("test","alignmentLayout:"  + tag);
         String xml = buildView(artboards,layer,tag);
-        Log.d("test",xml);
+        System.out.println(xml);
 
 
         return xml;

@@ -1,4 +1,4 @@
-package com.lvshou.sketchlayout;
+package cn.georgeyang.util;
 
 /*
  * Copyright (C) 2009 The Android Open Source Project
@@ -16,8 +16,6 @@ package com.lvshou.sketchlayout;
  * limitations under the License.
  */
 
-import android.text.TextUtils;
-import android.util.Log;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -400,7 +398,7 @@ public class HanziToPinyin {
                 if (locale[i].equals(Locale.CHINA)) {
                     // Do self validation just once.
                     if (DEBUG) {
-                        Log.d(TAG, "Self validation. Result: " + doSelfValidation());
+//                        Log.d(TAG, "Self validation. Result: " + doSelfValidation());
                     }
                     sInstance = new HanziToPinyin(true);
                     return sInstance;
@@ -412,7 +410,7 @@ public class HanziToPinyin {
                     return sInstance;
                 }
             }
-            Log.w(TAG, "There is no Chinese collator, HanziToPinyin is disabled");
+//            Log.w(TAG, "There is no Chinese collator, HanziToPinyin is disabled");
             sInstance = new HanziToPinyin(false);
             return sInstance;
         }
@@ -433,8 +431,8 @@ public class HanziToPinyin {
             final String curString = Character.toString(c);
             int cmp = COLLATOR.compare(lastString, curString);
             if (cmp >= 0) {
-                Log.e(TAG, "Internal error in Unihan table. " + "The last string \"" + lastString
-                        + "\" is greater than current string \"" + curString + "\".");
+//                Log.e(TAG, "Internal error in Unihan table. " + "The last string \"" + lastString
+//                        + "\" is greater than current string \"" + curString + "\".");
                 return false;
             }
             lastString = curString;

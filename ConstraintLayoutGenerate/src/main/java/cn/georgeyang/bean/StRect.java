@@ -1,4 +1,4 @@
-package com.lvshou.sketchlayout;
+package cn.georgeyang.bean;
 
 /**
  * Created by georgeyang1024 on 2017/12/22.

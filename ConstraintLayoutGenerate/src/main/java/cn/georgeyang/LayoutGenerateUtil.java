@@ -1,46 +1,52 @@
-package com.lvshou.sketchlayout;
+package cn.georgeyang;
 
-import android.content.Context;
-import android.support.constraint.ConstraintLayout;
-import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.util.JsonReader;
-import android.util.Log;
-import android.view.Gravity;
+import com.google.gson.stream.JsonReader;
 
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import cn.georgeyang.bean.LayoutTag;
+import cn.georgeyang.bean.StArtboards;
+import cn.georgeyang.bean.StLayer;
+import cn.georgeyang.bean.StRect;
+import cn.georgeyang.conf.Gravity;
+import cn.georgeyang.util.DisUtil;
+import cn.georgeyang.util.JsonReaderUtil;
+import cn.georgeyang.util.LayerFilterUtil;
+import cn.georgeyang.util.LayoutTagBuildUtil;
+import cn.georgeyang.util.PinyinUtil;
+import cn.georgeyang.util.TextUtils;
 
 /**
- * Created by georgeyang1024 on 2017/12/22.
+ * 480*800,160dpi的手机纵向，宽度是320dp
+ * values-w400dp是指，宽度至少400dp
+ * 如果将400设置成设计时的宽度，那么就会有w???/w400,将比例乘进去得到400dp的一套尺寸
+ * 生xml,从最小320开始生成,增量20,最大nexus6p的520，开始生成10个xml
+ * Created by yangsp on 2016/10/24.
  */
-public class SketchLayout extends ConstraintLayout {
-    public SketchLayout(Context context) {
-        super(context);
+
+public class LayoutGenerateUtil {
+
+    public static void main(String[] args) {
+        new LayoutGenerateUtil().show();
     }
 
-    public SketchLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public SketchLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    int showIndex = 1;//登录页
+    int showIndex = 4;//登录页
     public void show() {
         try {
             //3.0设计/登录注册/index.html#artboard9
-            InputStreamReader inputReader = new InputStreamReader(getResources().getAssets().open("test.json"));
+            InputStreamReader inputReader = new InputStreamReader(new FileInputStream("test.json"));
             JsonReader reader = new JsonReader(inputReader);
             reader.beginObject();
             while(reader.hasNext()){
                 String keyName = reader.nextName();
-                Log.d("test",keyName);
+                System.out.println(keyName);
                 if (TextUtils.equals(keyName,"artboards")) {
                     reader.beginArray();
                     int index = 0;
@@ -48,7 +54,7 @@ public class SketchLayout extends ConstraintLayout {
                         reader.beginObject();
                         if (index==showIndex) {
                             StArtboards stArtboards = JsonReaderUtil.paresObject(reader, StArtboards.class);
-                            Log.d("test","name:" + stArtboards.name);
+                            System.out.println("name:" + stArtboards.name);
                             if (stArtboards.height*1f/stArtboards.width<=16f/9) {
                                 //大于6比9，是很长的图，不适合一屏展示，从上面开始布局
 
@@ -77,11 +83,11 @@ public class SketchLayout extends ConstraintLayout {
 
     private void doLater(StArtboards artboards) throws Exception {
         ArrayList<StLayer> filterLayer = filterLayer(artboards);
-        Log.d("test","filterLayer:" + Arrays.asList(filterLayer));
+        System.out.println("filterLayer:" + Arrays.asList(filterLayer));
         orderFindList(artboards,filterLayer);
-        Log.d("test","orderFindList:" + Arrays.asList(filterLayer));
+        System.out.println("orderFindList:" + Arrays.asList(filterLayer));
         List<LayoutTag> layoutTagList = parseLayoutTags(artboards,filterLayer);
-        Log.d("test","layoutTagList:" + Arrays.asList(layoutTagList));
+        System.out.println("layoutTagList:" + Arrays.asList(layoutTagList));
     }
 
     /**
@@ -150,7 +156,7 @@ public class SketchLayout extends ConstraintLayout {
                 StLayer findLayer = orderEffectList.get(j);//参考目标
 
                 //左居左
-                tempDis = DisUtil.checkDisDirection(tagLayer,Gravity.LEFT,findLayer,Gravity.LEFT);
+                tempDis = DisUtil.checkDisDirection(tagLayer, Gravity.LEFT,findLayer,Gravity.LEFT);
                 if (leftToLeftLayer==null) {
                     leftToLeftLayer = findLayer;
                     leftToLeftDis = tempDis;
@@ -352,9 +358,8 @@ public class SketchLayout extends ConstraintLayout {
 
             layoutTags.add(layoutTag);
         }
-        Log.d("test",xmlBuffer.toString());
+        System.out.println(xmlBuffer.toString());
         return layoutTags;
     }
-
 
 }

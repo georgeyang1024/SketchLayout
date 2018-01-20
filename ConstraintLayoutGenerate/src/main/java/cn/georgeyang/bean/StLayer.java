@@ -1,10 +1,9 @@
-package com.lvshou.sketchlayout;
-
-
-import android.text.TextUtils;
-import android.util.Log;
+package cn.georgeyang.bean;
 
 import java.util.List;
+
+import cn.georgeyang.util.PinyinUtil;
+import cn.georgeyang.util.TextUtils;
 
 /**
  * Created by georgeyang1024 on 2017/12/22.

@@ -1,8 +1,7 @@
-package com.lvshou.sketchlayout;
+package cn.georgeyang.util;
 
-import android.text.TextUtils;
-import android.util.JsonReader;
-import android.util.Log;
+
+import com.google.gson.stream.JsonReader;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 
 public class JsonReaderUtil  {
-    public static <T> T paresObject (JsonReader reader,Class<T> clazz) {
+    public static <T> T paresObject (JsonReader reader, Class<T> clazz) {
 
         try {
             T ret = clazz.newInstance();
@@ -78,25 +77,6 @@ public class JsonReaderUtil  {
         }
         return null;
     }
-
-//    public static List <? extends List>  paresArray (JsonReader reader, Class<? extends List> clazz) {
-//        try {
-//
-//            Log.d("test","getComponentType:" +  clazz.getComponentType());
-//
-//            Type genType = clazz.getGenericSuperclass();
-//            Log.d("test","genType:" + genType);
-//            Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-//            Class entityClass = (Class) params[0];
-//
-//            List list = clazz.newInstance();
-//
-//            return paresArrayByTagClass(reader,list,entityClass);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 
     public static <T> List<T>  paresArrayByTagClass (JsonReader reader,List list, Class<T> tagClass) {
         try {

@@ -1,4 +1,4 @@
-package com.lvshou.sketchlayout;
+package cn.georgeyang.bean;
 
 import java.util.List;
 

@@ -1,4 +1,7 @@
-package com.lvshou.sketchlayout;
+package cn.georgeyang.util;
+
+import cn.georgeyang.bean.StArtboards;
+import cn.georgeyang.bean.StLayer;
 
 /**
  * 过滤没用的Layer
@@ -11,7 +14,7 @@ public class LayerFilterUtil {
      * @param layer
      * @return
      */
-    public static boolean filter(StArtboards artboards,StLayer layer) {
+    public static boolean filter(StArtboards artboards, StLayer layer) {
         if (layer==null || layer.rect == null) return true;
         if (layer.rect.x + layer.rect.width>artboards.width) {//超出画布
             return true;

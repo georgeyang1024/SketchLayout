@@ -1,4 +1,4 @@
-package com.lvshou.sketchlayout;
+package cn.georgeyang.bean;
 
 
 /**
@@ -64,6 +64,6 @@ public class LayoutTag {
                 ", useRightLayer=" + useRightLayer +
                 ", useTopLayer=" + useTopLayer +
                 ", useBottomLayer=" + useBottomLayer +
-                '}';
+                "}\n";
     }
 }
