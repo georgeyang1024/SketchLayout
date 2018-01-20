@@ -41,7 +41,7 @@ public class LayoutGenerateUtil {
     public void show() {
         try {
             //3.0设计/登录注册/index.html#artboard9
-            InputStreamReader inputReader = new InputStreamReader(new FileInputStream("test.json"));
+            InputStreamReader inputReader = new InputStreamReader(new FileInputStream("test.json"),"utf-8");
             JsonReader reader = new JsonReader(inputReader);
             reader.beginObject();
             while(reader.hasNext()){
