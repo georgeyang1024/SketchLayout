@@ -31,7 +31,7 @@ public class SketchLayout extends ConstraintLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    int showIndex = 0;//登录页
+    int showIndex = 1;//登录页
     public void show() {
         try {
             //3.0设计/登录注册/index.html#artboard9
@@ -229,44 +229,7 @@ public class SketchLayout extends ConstraintLayout {
                     bottomToTopDis = tempDis;
                 }
 
-////                Log.d("test","findLayer:" + findLayer);
-//                tempDis = DisUtil.checkDisDirection(sourceLayer,findLayer,Gravity.LEFT);
-//                if (leftLayer == null) {
-//                    leftLayer = findLayer;
-//                    leftLayerDis = tempDis;
-//                } else if (Math.abs(tempDis)<Math.abs(leftLayerDis)) {//由于逐渐往外查找，两个里外不同，相同的距离，不要用等于取到最外层
-//                    leftLayer = findLayer;
-//                    leftLayerDis = tempDis;
-//                }
-//
-//                tempDis = DisUtil.checkDisDirection(sourceLayer,findLayer,Gravity.RIGHT);
-//                if (rightLayer == null) {
-//                    rightLayer = findLayer;
-//                    rightLayerDis = tempDis;
-//                } else if (Math.abs(tempDis)<Math.abs(rightLayerDis)) {
-//                    rightLayer = findLayer;
-//                    rightLayerDis = tempDis;
-//                }
-//
-//                tempDis = DisUtil.checkDisDirection(sourceLayer,findLayer,Gravity.TOP);
-//                if (topLayer == null) {
-//                    topLayer = findLayer;
-//                    topLayerDis = tempDis;
-//                } else if (Math.abs(tempDis)<Math.abs(topLayerDis)) {
-//                    topLayer = findLayer;
-//                    topLayerDis = tempDis;
-//                }
-//
-//                tempDis = DisUtil.checkDisDirection(sourceLayer,findLayer,Gravity.BOTTOM);
-//                if (bottomLayer == null) {
-//                    bottomLayer = findLayer;
-//                    bottomLayerDis = tempDis;
-//                } else if (Math.abs(tempDis)<Math.abs(bottomLayerDis)) {
-//                    bottomLayer = findLayer;
-//                    bottomLayerDis = tempDis;
-//                }
-
-                //只找一个外部
+                //只找一个最近的外部元素
                 if (outerLayer==null) {
                     if (DisUtil.isInner(tagLayer,findLayer)) {
                         outerLayer = findLayer;
@@ -315,7 +278,7 @@ public class SketchLayout extends ConstraintLayout {
 
             //左右最小距离的差值
             double leftRightDis = Math.min(Math.abs(leftToLeftDis),Math.abs(leftToRightDis))-Math.min(Math.abs(rightToRightDis),Math.abs(rightToLeftDis));
-            if (leftRightDis<=2) {
+            if (Math.abs(leftRightDis)<=2) {
                 layoutTag.leftRightEq = true;
             } else if (leftRightDis>0) {
                 layoutTag.rightMinThanLeft = true;
@@ -324,7 +287,7 @@ public class SketchLayout extends ConstraintLayout {
             }
 
             double topBottomDis = Math.min(Math.abs(topToTopDis),Math.abs(topToBottomDis))-Math.min(Math.abs(bottomToTopDis),Math.abs(bottomToBottomDis));
-            if (topBottomDis<=2) {
+            if (Math.abs(topBottomDis)<=2) {
                 layoutTag.topBottomEq = true;
             } else if (topBottomDis>0) {
                 layoutTag.bottomMinThanTop = true;
@@ -345,10 +308,11 @@ public class SketchLayout extends ConstraintLayout {
                     layoutTag.useRightLayer = rightToLeftLayer;
                 }
             } else if (layoutTag.leftMinThanRight) {
+                //通过测试
                 if (Math.abs(leftToLeftDis)<=Math.abs(leftToRightDis)) {
                     layoutTag.useLeftLayer = leftToLeftLayer;
                 } else {
-                    layoutTag.useLeftLayer = rightToLeftLayer;
+                    layoutTag.useLeftLayer = leftToRightLayer;
                 }
             } else if (layoutTag.rightMinThanLeft) {
                 if (Math.abs(rightToRightDis)<=Math.abs(rightToLeftDis)) {
@@ -393,38 +357,4 @@ public class SketchLayout extends ConstraintLayout {
     }
 
 
-
-
-//    private void startLayout(JsonReader jsonReader) throws Exception {
-//        List<StLayer> stLayer = null;
-//
-//        jsonReader.beginObject();
-//        while (jsonReader.hasNext()) {
-//            String keyName = jsonReader.nextName();
-//            if (TextUtils.equals("notes",keyName)) {
-//                jsonReader.skipValue();
-//                continue;
-//            } else if (TextUtils.equals("layers",keyName)) {
-//                jsonReader.beginArray();
-//                stLayer = JsonReaderUtil.paresArrayByTagClass(jsonReader, StLayer.class);
-//                Log.d("test","layer:" + stLayer.size());
-//                jsonReader.endArray();
-//            } else {
-//                String name = jsonReader.nextString();
-//                Log.d("test",keyName + ">>" + name);
-//            }
-//        }
-//        jsonReader.endObject();
-//
-//        //拿到所有
-//
-//        for (StLayer stLayerTag : stLayer) {
-//            float minDis = Float.MAX_VALUE,maxDis = Float.MIN_VALUE;
-//            for (StLayer stLayer2 : stLayer) {
-//                if (stLayerTag == stLayer2) continue;
-//
-//            }
-//        }
-//
-//    }
 }

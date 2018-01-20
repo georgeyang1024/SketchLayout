@@ -23,18 +23,17 @@ public class StLayer {
     public String fontFace;
     public String textAlign;
     public float letterSpacing;
-//    public StColor color;
+    public List<StBorders> borders;
+    public StColor color;
 
     @Override
     public String toString() {
         return TextUtils.equals(objectID,"parent") ? "parent" : "@+id/" + getViewId();
     }
 
-    private String viewId;
+
     public String getViewId() {
-        if (!TextUtils.isEmpty(viewId)) {
-            return viewId;
-        }
+        String viewId;
         if (PinyinUtil.isChinese(name)) {
             viewId =  PinyinUtil.getPinyinName(name);
         } else {

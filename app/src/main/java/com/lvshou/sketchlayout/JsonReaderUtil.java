@@ -21,6 +21,7 @@ public class JsonReaderUtil  {
             T ret = clazz.newInstance();
             while (reader.hasNext()) {
                 String name = reader.nextName();
+                name = name == null?"" : name.replace("-","_");
 //                Log.d("test","name:" + name);
                 Field[] fields = clazz.getDeclaredFields();
                 boolean find = false;

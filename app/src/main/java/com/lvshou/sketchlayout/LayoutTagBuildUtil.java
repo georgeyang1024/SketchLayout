@@ -21,11 +21,17 @@ public class LayoutTagBuildUtil {
             "        android:id=\"@+id/%s\"\n" +
             "        android:layout_width=\"%s\"\n" +
             "        android:layout_height=\"%s\"\n" +
-            "        android:text=\"%s\"\n";
+            "        android:text=\"%s\"\n" +
+            "        android:textColor=\"%s\"\n";
 
     private static String buildViewBackground(StArtboards artboards,StLayer layer,LayoutTag tag) {
-        int color = Color.argb(255,random.nextInt(255),random.nextInt(255),random.nextInt(255));
-        return String.format( "android:background=\"#%s\"\n",Integer.toHexString(color));
+        String color;
+        if (layer==null || layer.borders==null || layer.borders.isEmpty() || layer.borders.get(0).color==null || TextUtils.isEmpty(layer.borders.get(0).color.argb_hex)) {
+            color = "#" + Integer.toHexString(Color.argb(255,random.nextInt(255),random.nextInt(255),random.nextInt(255)));
+        } else {
+            color = layer.borders.get(0).color.argb_hex;
+        }
+        return String.format( "android:background=\"%s\"\n",color);
     }
 
 //    private static String buildViewBound(StArtboards artboards,StLayer layer,LayoutTag tag) {
@@ -158,12 +164,22 @@ public class LayoutTagBuildUtil {
 
     private static String buildTextViewHeader(StArtboards artboards,StLayer layer,LayoutTag tag) {
         String id =  PinyinUtil.getPinyinName(layer.name);
+        String color;
+        if (layer==null || layer.color==null || TextUtils.isEmpty(layer.color.argb_hex)) {
+            color = "#" + Integer.toHexString(Color.BLACK);
+        } else {
+            color = layer.color.argb_hex;
+        }
         Object[] params = new Object[]{
                 layer.getViewId(),
                 (int)(layer.rect.width) + "px",
                 (int)(layer.rect.height) + "px",
-                TextUtils.isEmpty(layer.content)?id:layer.content
+                TextUtils.isEmpty(layer.content)?id:layer.content,
+                color
         };
+        if ("denglu".equalsIgnoreCase(layer.getViewId())) {
+            Log.d("test","c:" + color);
+        }
         return String.format(templateTextView,params);
     }
 
@@ -180,42 +196,63 @@ public class LayoutTagBuildUtil {
     private static String buildViewBound (StArtboards artboards,StLayer layer,LayoutTag tag) {
         List list = new ArrayList<String>();
         if (tag.leftRightEq) {
-            list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.leftToLeftLayer}));
-            list.add(String.format("app:layout_constraintRight_toLeftOf=\"%s\"", new Object[]{tag.rightToRightLayer}));
+            if (tag.leftToLeftLayer!=tag.rightToRightLayer) {
+                //测试完成
+                list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.leftToLeftLayer}));
+                list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.leftToLeftDis + "px"}));
+                list.add(String.format("app:layout_constraintRight_toRightOf=\"%s\"", new Object[]{tag.rightToRightLayer}));
+                list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.rightToRightDis + "px"}));
+            } else if (tag.leftToLeftLayer==tag.rightToRightLayer) {
+                //测试完成
+                list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.leftToLeftLayer}));
+                list.add(String.format("app:layout_constraintRight_toRightOf=\"%s\"", new Object[]{tag.rightToRightLayer}));
+            } else if (tag.rightToLeftLayer != tag.leftToRightLayer) {
+                //未测试
+                list.add(String.format("app:layout_constraintRight_toLeftOf=\"%s\"", new Object[]{tag.leftToLeftLayer}));
+                list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.leftToRightDis + "px"}));
+                //未测试
+                list.add(String.format("app:layout_constraintLeft_toRightOf=\"%s\"", new Object[]{tag.rightToRightLayer}));
+                list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.rightToRightDis + "px"}));
+            } else if (tag.rightToLeftLayer == tag.leftToRightLayer) {
+                list.add(String.format("app:layout_constraintLeft_toRightOf=\"%s\"", new Object[]{tag.leftToLeftLayer}));
+                list.add(String.format("app:layout_constraintLeft_toRightOf=\"%s\"", new Object[]{tag.rightToRightLayer}));
+            }
         } else if (tag.leftMinThanRight) {
-            if (tag.useLeftLayer==tag.leftToLeftLayer) {
+            if (Math.abs(tag.leftToLeftDis) < Math.abs(tag.leftToRightDis)) {
                 list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.useLeftLayer}));
                 list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.leftToLeftDis + "px"}));
-            } else if (tag.useLeftLayer==tag.leftToRightLayer) {
-                //TODO ?? how?
+            } else {
+                //已完成
                 list.add(String.format("app:layout_constraintLeft_toRightOf=\"%s\"", new Object[]{tag.useLeftLayer}));
-                list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.leftToLeftDis + "px"}));
+                list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.leftToRightDis + "px"}));
             }
         } else if (tag.rightMinThanLeft) {
-            if (tag.useRightLayer==tag.rightToRightLayer) {
+            //成功
+            if (Math.abs(tag.rightToRightDis) < Math.abs(tag.rightToLeftDis)) {
                 list.add(String.format("app:layout_constraintRight_toRightOf=\"%s\"", new Object[]{tag.useRightLayer}));
                 list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.rightToRightDis + "px"}));
-            } else if (tag.useRightLayer==tag.rightToLeftLayer) {
+            } else {
                 list.add(String.format("app:layout_constraintRight_toLeftOf=\"%s\"", new Object[]{tag.useRightLayer}));
-                list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.rightToRightDis + "px"}));
+                list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.rightToLeftDis + "px"}));
             }
         }
+
         if (tag.topBottomEq) {
             list.add(String.format("app:layout_constraintTop_toTopOf=\"%s\"", new Object[]{tag.topToTopLayer}));
             list.add(String.format("app:layout_constraintBottom_toBottomOf=\"%s\"", new Object[]{tag.bottomToBottomLayer}));
         } else if (tag.topMinThanBottom) {
-            if (tag.useTopLayer==tag.topToTopLayer) {
+            if (Math.abs(tag.topToTopDis) < Math.abs(tag.topToBottomDis)) {
                 list.add(String.format("app:layout_constraintTop_toTopOf=\"%s\"", new Object[]{tag.useTopLayer}));
                 list.add(String.format("android:layout_marginTop=\"%s\"", new Object[]{(int) tag.topToTopDis + "px"}));
-            } else if (tag.useTopLayer==tag.topToBottomLayer) {
+            } else {
                 list.add(String.format("app:layout_constraintTop_toBottomOf=\"%s\"", new Object[]{tag.useTopLayer}));
                 list.add(String.format("android:layout_marginTop=\"%s\"", new Object[]{(int) tag.topToBottomDis + "px"}));
             }
         } else if (tag.bottomMinThanTop) {
-            if (tag.useBottomLayer==tag.bottomToBottomLayer) {
+            if (Math.abs(tag.bottomToBottomDis) < Math.abs(tag.bottomToTopDis)) {
                 list.add(String.format("app:layout_constraintBottom_toBottomOf=\"%s\"",new Object[]{tag.useBottomLayer}));
                 list.add(String.format("android:layout_marginBottom=\"%s\"\n",new Object[]{(int)(tag.bottomToBottomDis) + "px"}));
-            } else if (tag.useBottomLayer == tag.bottomToTopLayer) {
+            } else {
                 list.add(String.format("app:layout_constraintBottom_toTopOf=\"%s\"",new Object[]{tag.useBottomLayer}));
                 list.add(String.format("android:layout_marginBottom=\"%s\"\n",new Object[]{(int)(tag.bottomToTopDis) + "px"}));
             }

@@ -38,14 +38,14 @@ public class LayoutTag {
         return "LayoutTag{" +
                 "source=" + source +
                 ", outLayer=" + outLayer +
-                ", leftToRightLayer=" + leftToRightLayer +
                 ", leftToLeftLayer=" + leftToLeftLayer +
-                ", rightToLeftLayer=" + rightToLeftLayer +
+                ", leftToRightLayer=" + leftToRightLayer +
                 ", rightToRightLayer=" + rightToRightLayer +
+                ", rightToLeftLayer=" + rightToLeftLayer +
                 ", topToTopLayer=" + topToTopLayer +
                 ", topToBottomLayer=" + topToBottomLayer +
-                ", bottomToTopLayer=" + bottomToTopLayer +
                 ", bottomToBottomLayer=" + bottomToBottomLayer +
+                ", bottomToTopLayer=" + bottomToTopLayer +
                 ", leftToLeftDis=" + leftToLeftDis +
                 ", leftToRightDis=" + leftToRightDis +
                 ", rightToRightDis=" + rightToRightDis +
