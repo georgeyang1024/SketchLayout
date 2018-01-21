@@ -2,10 +2,11 @@ package cn.georgeyang.bean;
 
 
 /**
+ * 第一次处理完的边界
  * Created by george.yang on 17/12/22.
  */
 
-public class LayoutTag {
+public class BoundTag {
     public StLayer source;//自身资源
     public StLayer outLayer;//外围参考的元素
 

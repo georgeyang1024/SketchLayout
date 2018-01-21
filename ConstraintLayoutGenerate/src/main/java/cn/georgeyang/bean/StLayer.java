@@ -44,12 +44,13 @@ public class StLayer {
         } catch (Exception e) {
 
         }
+        viewId = viewId.replace("(","").replace(")","").replace("?","")
+                .replace("、","").replace("）","").replace("（","").replace(",","")
+                .replace("，","").replace(".","").replace("？","");
         if (TextUtils.isEmpty(viewId)) {
             viewId = PinyinUtil.getName("id_" + objectID.hashCode());
         }
-        return  viewId.replace("(","").replace("(","").replace("?","")
-                .replace("、","").replace("）","").replace("（","").replace(",","")
-                .replace("，","").replace(".","").replace("？","");
+        return viewId;
     }
 
 }

@@ -27,4 +27,21 @@ public class LayerFilterUtil {
         }
         return false;
     }
+
+    /**
+     * 过滤参考view
+     * @param stArtboards 画板
+     * @param referenceLayer 参考元素
+     * @param dealLayer 处理的元素
+     * @return
+     */
+    public static boolean filterReference(StArtboards stArtboards,StLayer referenceLayer,StLayer dealLayer) {
+        if (referenceLayer==null || dealLayer==null) {
+            return true;
+        }
+        if (TextUtils.equals(referenceLayer.type,"text")) {
+            return true;
+        }
+        return false;
+    }
 }
