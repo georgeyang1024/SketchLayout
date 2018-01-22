@@ -107,11 +107,11 @@ public class DisUtil {
         return ret;
     }
 
-    public static final boolean isInner(StLayer sourceLayer,StLayer tagLayer) {
-        return tagLayer.rect.x < sourceLayer.rect.x
-                && tagLayer.rect.x + tagLayer.rect.width > sourceLayer.rect.x + sourceLayer.rect.width
-                && tagLayer.rect.y < sourceLayer.rect.y
-                && tagLayer.rect.y + tagLayer.rect.height > sourceLayer.rect.y + sourceLayer.rect.height;
+    public static final boolean isInner(StLayer sourceLayer,StLayer outerLayer) {
+        return outerLayer.rect.x < sourceLayer.rect.x
+                && outerLayer.rect.x + outerLayer.rect.width > sourceLayer.rect.x + sourceLayer.rect.width
+                && outerLayer.rect.y < sourceLayer.rect.y
+                && outerLayer.rect.y + outerLayer.rect.height > sourceLayer.rect.y + sourceLayer.rect.height;
     }
 
 }

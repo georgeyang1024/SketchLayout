@@ -9,7 +9,7 @@ package cn.georgeyang.bean;
 public class BoundTag {
     public StLayer source;//自身资源
     public StLayer outLayer;//外围参考的元素
-
+    public StLayer inLayer;//元素包含得到元素
 
     public StLayer leftToRightLayer;//当前矩形，最近那个矩形的右边
     public StLayer leftToLeftLayer;

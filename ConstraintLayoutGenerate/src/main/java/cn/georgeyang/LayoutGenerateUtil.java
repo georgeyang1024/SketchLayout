@@ -25,7 +25,7 @@ import cn.georgeyang.util.TextUtils;
 public class LayoutGenerateUtil {
 
     public static void main(String[] args) {
-        int showIndex = 0;//登录页
+        int showIndex = 4;//登录页
         generate(showIndex);
     }
 

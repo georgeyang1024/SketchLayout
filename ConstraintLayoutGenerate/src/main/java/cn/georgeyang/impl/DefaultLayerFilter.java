@@ -1,6 +1,8 @@
 package cn.georgeyang.impl;
 
 
+import cn.georgeyang.bean.BoundDepend;
+import cn.georgeyang.bean.BoundTag;
 import cn.georgeyang.bean.StArtboards;
 import cn.georgeyang.bean.StLayer;
 import cn.georgeyang.intf.LayerFilter;
@@ -47,4 +49,41 @@ public class DefaultLayerFilter implements LayerFilter {
         }
         return false;
     }
+
+    /**
+     * 带依赖的过滤
+     * @param artboards
+     * @param boundTag
+     * @return
+     */
+    @Override
+    public boolean filterDependent(StArtboards artboards, BoundDepend boundTag) {
+        if (boundTag==null || boundTag.source==null) return true;
+        StLayer layer = boundTag.source;
+
+        if (!(boundTag.innerList==null || boundTag.innerList.isEmpty())) {
+            StLayer innerFirst = boundTag.innerList.get(0);
+            if (TextUtils.equals("text",innerFirst.type) && !TextUtils.isEmpty(innerFirst.content)) {
+                char c = innerFirst.content.charAt(0);
+                if (c >= 'a' && c <= 'z' || c >='A' && c <= 'Z') {
+                    if (boundTag.innerList.size()==1) {
+                        return true;
+                    }
+                }
+            }
+        }
+        if (!(boundTag.outerList==null || boundTag.outerList.isEmpty())) {
+            if (TextUtils.equals("text",layer.type) && !TextUtils.isEmpty(layer.content)) {
+                char c = layer.content.charAt(0);
+                if (c >= 'a' && c <= 'z' || c >='A' && c <= 'Z') {
+                    StLayer outterFirst = boundTag.outerList.get(0);
+                    if (outterFirst.rect.height == 84 && outterFirst.rect.width == 63) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }

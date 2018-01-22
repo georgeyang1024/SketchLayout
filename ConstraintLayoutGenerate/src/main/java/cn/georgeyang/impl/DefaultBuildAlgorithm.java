@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import cn.georgeyang.bean.BoundDepend;
 import cn.georgeyang.bean.BoundResultTag;
 import cn.georgeyang.bean.BoundTag;
 import cn.georgeyang.bean.StArtboards;
@@ -26,7 +27,8 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
     public List<BoundResultTag> build(StArtboards artboards, LayerFilter layerFilter) {
         List<StLayer> orderEffectList = getEffectList(artboards,layerFilter);
         orderFindList(artboards,orderEffectList);
-        List<BoundTag> parseBoundTags = parseBoundTags(artboards,orderEffectList,layerFilter);
+        List<StLayer> orderEffectList2 = filterDepend(artboards,layerFilter,orderEffectList);
+        List<BoundTag> parseBoundTags = parseBoundTags(artboards,orderEffectList2,layerFilter);
         return parseBoundResultTags(artboards,parseBoundTags,layerFilter);
     }
 
@@ -38,6 +40,40 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
             }
         }
         return layers;
+    }
+
+    public List<StLayer> filterDepend(StArtboards artboards,LayerFilter layerFilter,List<StLayer> orderEffectList) {
+        List<StLayer> ret = new ArrayList<>();
+        List<BoundDepend> list = new ArrayList<>();
+
+        for (int i = 0; i < orderEffectList.size(); i++) {//从外往里循环找位置
+            StLayer tagLayer = orderEffectList.get(i);
+
+            BoundDepend boundDepend = new BoundDepend();
+            boundDepend.source = tagLayer;
+            boundDepend.outerList = new ArrayList<>();
+            boundDepend.innerList = new ArrayList<>();
+
+            list.add(boundDepend);
+        }
+
+        for (int i = 0; i < list.size(); i++) {//从外往里循环找位置
+            BoundDepend tagDepend = list.get(i);
+            for (int j = i + 1; j < list.size(); j++) {//找inner
+                BoundDepend findDepend = list.get(j);//离中心越近的元素
+                if (DisUtil.isInner(findDepend.source,tagDepend.source)) {
+                    tagDepend.innerList.add(findDepend.source);
+                    findDepend.outerList.add(tagDepend.source);
+                }
+            }
+        }
+
+        for(BoundDepend boundDepend:list) {
+            if (!layerFilter.filterDependent(artboards,boundDepend)) {
+                ret.add(boundDepend.source);
+            }
+        }
+        return ret;
     }
 
     @Override
@@ -219,9 +255,10 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
 
         for (int i = 1; i < orderEffectList.size(); i++) {//从外往里循环找位置
             StLayer tagLayer = orderEffectList.get(i);
+
+            StLayer outerLayer = null;
             StLayer leftToLeftLayer = null,leftToRightLayer = null,rightToRightLayer = null,rightToLeftLayer = null;
             StLayer topToTopLayer = null,topToBottomLayer = null,bottomToBottomLayer = null,bottomToTopLayer = null;
-            StLayer outerLayer = null;
             double[] leftToLeftDis = null,leftToRightDis =null ,rightToRightDis =null,rightToLeftDis = null;
             double[] topToTopDis = null,topToBottomDis = null,bottomToBottomDis = null,bottomToTopDis = null;
             double[] tempDis;
@@ -236,12 +273,13 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
                     continue;
                 }
 
-                //只找一个最近的外部元素
                 if (outerLayer==null) {
+                    //只找一个最近的外部元素
                     if (DisUtil.isInner(tagLayer,findLayer)) {
                         outerLayer = findLayer;
                     }
                 }
+
 
                 //左居左
                 tempDis = DisUtil.checkDisDirection(rootLayer,tagLayer, Gravity.LEFT,findLayer,Gravity.LEFT);
@@ -441,7 +479,6 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
             }
 
             boundTags.add(boundTag);
-
         }
 
         return boundTags;
