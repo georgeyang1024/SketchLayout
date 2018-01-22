@@ -72,49 +72,14 @@ public class LayoutGenerateUtil {
     }
 
     private static void generate(StArtboards artboards) throws Exception {
-        ArrayList<StLayer> filterLayer = filterLayer(artboards);
-        System.out.println("filterLayer:" + Arrays.asList(filterLayer));
-        orderFindList(artboards,filterLayer);
-        System.out.println("orderFindList:" + Arrays.asList(filterLayer));
-
-
-        String string = new AndroidLayoutBuilder().buildLayout(artboards,filterLayer);
+        String string = new AndroidLayoutBuilder().buildLayout(artboards);
         FileWriter writer=new FileWriter("result.xml");
         writer.write(string);
         writer.close();
 
     }
 
-    /**
-     * 按照元素离屏幕原点或最远点进行由近到远排序
-     * @param effectList
-     */
-    private static void orderFindList(final StArtboards artboards,List<StLayer> effectList) {
-        Collections.sort(effectList, new Comparator<StLayer>() {
-            @Override
-            public int compare(StLayer layer, StLayer t1) {
-                double disL = DisUtil.checkZeroEndDis(artboards,layer);
-                double disR = DisUtil.checkZeroEndDis(artboards,t1);
-                if (disL>disR) {
-                    return 1;
-                } else if (disL==disR) {
-                    return 0;
-                } else {
-                    return -1;
-                }
-            }
-        });
-    }
 
-    private static ArrayList<StLayer> filterLayer(StArtboards artboards) throws Exception {
-        ArrayList<StLayer> layers = new ArrayList<>();
-        for (StLayer layer:artboards.layers) {
-            if (!LayerFilterUtil.filter(artboards,layer)) {
-                layers.add(layer);
-            }
-        }
-        return layers;
-    }
 
 
 }

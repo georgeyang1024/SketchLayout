@@ -24,17 +24,16 @@ public abstract class LayoutBuilder {
         this.buildAlgorithm = buildAlgorithm;
     }
 
-    public String buildLayout(StringBuffer stringBuffer,StArtboards artboards, List<StLayer> orderEffectList) {
-        if (stringBuffer==null || orderEffectList==null) return "";
-        List<BoundResultTag> resultTagList = buildAlgorithm.buildBoundTag(artboards, orderEffectList);
+    public String buildLayout(StringBuffer stringBuffer,StArtboards artboards) {
+        List<BoundResultTag> resultTagList = buildAlgorithm.buildBoundTag(artboards);
         stringBuffer.append(buildLayoutHeader(artboards,resultTagList));
         stringBuffer.append(buildLayoutBody(artboards,resultTagList));
         stringBuffer.append(buildLayoutFooter(artboards,resultTagList));
         return stringBuffer.toString();
     }
 
-    public String buildLayout(StArtboards artboards, List<StLayer> tagList) {
-        return buildLayout(new StringBuffer(),artboards,tagList);
+    public String buildLayout(StArtboards artboards) {
+        return buildLayout(new StringBuffer(),artboards);
     }
 
     public abstract String buildLayoutHeader(StArtboards artboards, List<BoundResultTag> tagList);

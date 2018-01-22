@@ -1,6 +1,8 @@
 package cn.georgeyang.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cn.georgeyang.bean.BoundResultTag;
@@ -11,8 +13,8 @@ import cn.georgeyang.bean.StRect;
 import cn.georgeyang.conf.Gravity;
 import cn.georgeyang.intf.BuildAlgorithm;
 import cn.georgeyang.util.DisUtil;
-import cn.georgeyang.util.LayerFilterUtil;
 import cn.georgeyang.util.PinyinUtil;
+import cn.georgeyang.util.TextUtils;
 
 /**
  * 默认的边界构建算法实现
@@ -20,10 +22,83 @@ import cn.georgeyang.util.PinyinUtil;
  */
 public class DefaultBuildAlgorithm implements BuildAlgorithm {
     @Override
-    public List<BoundResultTag> buildBoundTag(StArtboards artboards, List<StLayer> orderEffectList) {
+    public List<BoundResultTag> buildBoundTag(StArtboards artboards) {
+        List<StLayer> orderEffectList = filterLayer(artboards);
+        orderFindList(artboards,orderEffectList);
         List<BoundTag> parseBoundTags = parseBoundTags(artboards,orderEffectList);
         return parseBoundTags(parseBoundTags);
     }
+
+
+    /**
+     * 按照元素离屏幕原点或最远点进行由近到远排序
+     * @param effectList
+     */
+    private void orderFindList(final StArtboards artboards,List<StLayer> effectList) {
+        Collections.sort(effectList, new Comparator<StLayer>() {
+            @Override
+            public int compare(StLayer layer, StLayer t1) {
+                double disL = DisUtil.checkZeroEndDis(artboards,layer);
+                double disR = DisUtil.checkZeroEndDis(artboards,t1);
+                if (disL>disR) {
+                    return 1;
+                } else if (disL==disR) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        });
+    }
+
+    private ArrayList<StLayer> filterLayer(StArtboards artboards) {
+        ArrayList<StLayer> layers = new ArrayList<>();
+        for (StLayer layer:artboards.layers) {
+            if (!filterLayer(artboards,layer)) {
+                layers.add(layer);
+            }
+        }
+        return layers;
+    }
+
+
+    /**
+     * 是否需要过滤？
+     * @param artboards
+     * @param layer
+     * @return
+     */
+    public boolean filterLayer(StArtboards artboards, StLayer layer) {
+        if (layer==null || layer.rect == null) return true;
+        if (layer.rect.x + layer.rect.width>artboards.width) {//超出画布
+            return true;
+        }
+        if (layer.rect.y + layer.rect.height>artboards.height) {//超出画布
+            return true;
+        }
+        if (layer.rect.y + layer.rect.height <= 128) {//标题部分
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 过滤参考view
+     * @param stArtboards 画板
+     * @param referenceLayer 参考元素
+     * @param dealLayer 处理的元素
+     * @return
+     */
+    public boolean filterReference(StArtboards stArtboards,StLayer referenceLayer,StLayer dealLayer) {
+        if (referenceLayer==null || dealLayer==null) {
+            return true;
+        }
+        if (TextUtils.equals(referenceLayer.type,"text")) {
+            return true;
+        }
+        return false;
+    }
+
 
     private List<BoundResultTag> parseBoundTags(List<BoundTag> tagList) {
         List<BoundResultTag> list = new ArrayList<>();
@@ -35,76 +110,42 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
             if (tag.leftRightEq) {
                 if (tag.leftToLeftLayer != tag.rightToRightLayer) {
                     //测试完成
-
-//                    list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.leftToLeftLayer}));
-//                    list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.leftToLeftDis + "px"}));
-//                    list.add(String.format("app:layout_constraintRight_toRightOf=\"%s\"", new Object[]{tag.rightToRightLayer}));
-//                    list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.rightToRightDis + "px"}));
-
                     resultTag.leftToLeftLayer = tag.leftToLeftLayer;
                     resultTag.marginLeft = tag.leftToLeftDis;
                     resultTag.rightToRightLayer = tag.rightToRightLayer;
                     resultTag.marginRight = tag.rightToRightDis;
-
                 } else if (tag.leftToLeftLayer == tag.rightToRightLayer) {
                     //测试完成
-//                    list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.leftToLeftLayer}));
-//                    list.add(String.format("app:layout_constraintRight_toRightOf=\"%s\"", new Object[]{tag.rightToRightLayer}));
-
                     resultTag.leftToLeftLayer = tag.leftToLeftLayer;
                     resultTag.rightToRightLayer = tag.rightToRightLayer;
-
                 } else if (tag.rightToLeftLayer != tag.leftToRightLayer) {
-//                    //未测试
-//                    list.add(String.format("app:layout_constraintRight_toLeftOf=\"%s\"", new Object[]{tag.leftToLeftLayer}));
-//                    list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.leftToRightDis + "px"}));
-//                    //未测试
-//                    list.add(String.format("app:layout_constraintLeft_toRightOf=\"%s\"", new Object[]{tag.rightToRightLayer}));
-//                    list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.rightToRightDis + "px"}));
-
                     resultTag.rightToLeftLayer = tag.leftToLeftLayer;
                     resultTag.marginRight = tag.leftToLeftDis;
                     resultTag.rightToRightLayer = tag.rightToRightLayer;
                     resultTag.marginLeft = tag.rightToRightDis;
-
                 } else if (tag.rightToLeftLayer == tag.leftToRightLayer) {
-//                    list.add(String.format("app:layout_constraintLeft_toRightOf=\"%s\"", new Object[]{tag.leftToLeftLayer}));
-//                    list.add(String.format("app:layout_constraintLeft_toRightOf=\"%s\"", new Object[]{tag.rightToRightLayer}));
                     resultTag.rightToLeftLayer = tag.leftToLeftLayer;
                     resultTag.leftToRightLayer = tag.rightToRightLayer;
                 }
             } else if (tag.leftMinThanRight) {
                 if (Math.abs(tag.leftToLeftDis) < Math.abs(tag.leftToRightDis)) {
-//                    list.add(String.format("app:layout_constraintLeft_toLeftOf=\"%s\"", new Object[]{tag.useLeftLayer}));
-//                    list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.leftToLeftDis + "px"}));
                     resultTag.leftToLeftLayer = tag.useLeftLayer;
                     resultTag.marginLeft = tag.leftToLeftDis;
                 } else {
-                    //已完成
-//                    list.add(String.format("app:layout_constraintLeft_toRightOf=\"%s\"", new Object[]{tag.useLeftLayer}));
-//                    list.add(String.format("android:layout_marginLeft=\"%s\"", new Object[]{(int) tag.leftToRightDis + "px"}));
                     resultTag.leftToRightLayer = tag.useLeftLayer;
                     resultTag.marginLeft = tag.leftToRightDis;
                 }
             } else if (tag.rightMinThanLeft) {
-                //成功
                 if (Math.abs(tag.rightToRightDis) < Math.abs(tag.rightToLeftDis)) {
-//                    list.add(String.format("app:layout_constraintRight_toRightOf=\"%s\"", new Object[]{tag.useRightLayer}));
-//                    list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.rightToRightDis + "px"}));
-
                     resultTag.rightToRightLayer = tag.useRightLayer;
                     resultTag.marginRight = tag.rightToRightDis;
                 } else {
-//                    list.add(String.format("app:layout_constraintRight_toLeftOf=\"%s\"", new Object[]{tag.useRightLayer}));
-//                    list.add(String.format("android:layout_marginRight=\"%s\"", new Object[]{(int) tag.rightToLeftDis + "px"}));
                     resultTag.rightToLeftLayer = tag.useRightLayer;
                     resultTag.marginRight = tag.rightToLeftDis;
                 }
             }
 
             if (tag.topBottomEq) {
-//                list.add(String.format("app:layout_constraintTop_toTopOf=\"%s\"", new Object[]{tag.topToTopLayer}));
-//                list.add(String.format("app:layout_constraintBottom_toBottomOf=\"%s\"", new Object[]{tag.bottomToBottomLayer}));
                 if (tag.topToTopLayer != tag.bottomToBottomLayer) {
                     resultTag.topToTopLayer = tag.topToTopLayer;
                     resultTag.marginTop = tag.topToTopDis;
@@ -124,25 +165,17 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
                 }
             } else if (tag.topMinThanBottom) {
                 if (Math.abs(tag.topToTopDis) < Math.abs(tag.topToBottomDis)) {
-//                    list.add(String.format("app:layout_constraintTop_toTopOf=\"%s\"", new Object[]{tag.useTopLayer}));
-//                    list.add(String.format("android:layout_marginTop=\"%s\"", new Object[]{(int) tag.topToTopDis + "px"}));
                     resultTag.topToTopLayer = tag.useTopLayer;
                     resultTag.marginTop = tag.topToTopDis;
                 } else {
-//                    list.add(String.format("app:layout_constraintTop_toBottomOf=\"%s\"", new Object[]{tag.useTopLayer}));
-//                    list.add(String.format("android:layout_marginTop=\"%s\"", new Object[]{(int) tag.topToBottomDis + "px"}));
                     resultTag.topToBottomLayer = tag.useTopLayer;
                     resultTag.marginTop = tag.topToBottomDis;
                 }
             } else if (tag.bottomMinThanTop) {
                 if (Math.abs(tag.bottomToBottomDis) < Math.abs(tag.bottomToTopDis)) {
-//                    list.add(String.format("app:layout_constraintBottom_toBottomOf=\"%s\"", new Object[]{tag.useBottomLayer}));
-//                    list.add(String.format("android:layout_marginBottom=\"%s\"\n", new Object[]{(int) (tag.bottomToBottomDis) + "px"}));
                     resultTag.bottomToBottomLayer = tag.useBottomLayer;
                     resultTag.marginBottom = tag.bottomToBottomDis;
                 } else {
-//                    list.add(String.format("app:layout_constraintBottom_toTopOf=\"%s\"", new Object[]{tag.useBottomLayer}));
-//                    list.add(String.format("android:layout_marginBottom=\"%s\"\n", new Object[]{(int) (tag.bottomToTopDis) + "px"}));
                     resultTag.bottomToTopLayer = tag.useBottomLayer;
                     resultTag.marginBottom = tag.bottomToTopDis;
                 }
@@ -188,7 +221,7 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
                 StLayer findLayer = orderEffectList.get(j);//参考目标
 
                 //跳过无效的参考目标
-                if (LayerFilterUtil.filterReference(artboards,findLayer,tagLayer)) {
+                if (filterReference(artboards,findLayer,tagLayer)) {
                     findMinIndex--;
                     continue;
                 }
@@ -392,24 +425,9 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
                 }
             }
 
-//            String xml = LayoutTagBuildUtil.generatedLayout(artboards,rootLayer,tagLayer, boundTag);
-//            xmlBuffer.append(xml+"\n");
-
             boundTags.add(boundTag);
         }
-////        System.out.println(xmlBuffer.toString());
-//        FileWriter writer=new FileWriter("result.xml");
-//        writer.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-//                "<android.support.constraint.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
-//                "                                             xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n" +
-//                "                                             xmlns:tools=\"http://schemas.android.com/tools\"\n" +
-//                "                                             android:layout_width=\"750px\"\n" +
-//                "                                             android:layout_height=\"1134px\"\n" +
-//                "    android:background=\"@color/colorAccent\"\n" +
-//                "                             >\n");
-//        writer.write(xmlBuffer.toString());
-//        writer.write("</android.support.constraint.ConstraintLayout>");
-//        writer.close();
+
         return boundTags;
     }
 

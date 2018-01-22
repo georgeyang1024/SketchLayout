@@ -12,5 +12,5 @@ import cn.georgeyang.bean.StLayer;
  * Created by george.yang on 18/1/21.
  */
 public interface BuildAlgorithm {
-    List<BoundResultTag> buildBoundTag(StArtboards artboards, List<StLayer> orderEffectList);
+    List<BoundResultTag> buildBoundTag(StArtboards artboards);
 }
