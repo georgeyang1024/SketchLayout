@@ -27,8 +27,37 @@ public class DisUtil {
         return totalDis;
     }
 
+    /**
+     * 两个元素的距离
+     * @param tagLayer
+     * @param tagGravity
+     * @param sourceLayer
+     * @param sourceGravity
+     * @return [0]布局距离 [1]真实距离
+     */
+    public static final double[] checkDisDirection(StLayer parent,StLayer tagLayer,int tagGravity,StLayer sourceLayer,int sourceGravity) {
+        double[] ret = new double[] {Double.MAX_VALUE,Double.MAX_VALUE};
+        if (sourceLayer == null || tagLayer == null) return ret;
+        double dis = checkDisDirection(tagLayer.rect,tagGravity,sourceLayer.rect,sourceGravity);
+        double aDis = dis;
+        if (parent == sourceLayer && tagGravity==Gravity.BOTTOM && sourceGravity==Gravity.BOTTOM) {
+            //如果元素参考画布底部，底部距离*4倍(因为手机端，宽度和长度会变)
+            aDis = dis * 4;
+        }
+        ret[0] = aDis;
+        ret[1] = dis;
+        return ret;
+    }
 
-    public static final double checkDisDirection(StLayer tagLayer,int tagGravity,StLayer sourceLayer,int sourceGravity) {
+    /**
+     * 真实的距离
+     * @param tagLayer
+     * @param tagGravity
+     * @param sourceLayer
+     * @param sourceGravity
+     * @return
+     */
+    public static final double checkRealDisDirection(StLayer tagLayer,int tagGravity,StLayer sourceLayer,int sourceGravity) {
         if (sourceLayer == null || tagLayer == null) return Double.MAX_VALUE;
         return checkDisDirection(tagLayer.rect,tagGravity,sourceLayer.rect,sourceGravity);
     }

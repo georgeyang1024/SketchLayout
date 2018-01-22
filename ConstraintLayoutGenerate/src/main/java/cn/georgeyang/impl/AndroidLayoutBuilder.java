@@ -24,8 +24,8 @@ public class AndroidLayoutBuilder extends LayoutBuilder {
                 "<android.support.constraint.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
                 "   xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n" +
                 "   xmlns:tools=\"http://schemas.android.com/tools\"\n" +
-                "   android:layout_width=\"750px\"\n" +
-                "   android:layout_height=\"1134px\"\n" +
+                "   android:layout_width=\"match_parent\"\n" +
+                "   android:layout_height=\"match_parent\"\n" +
                 "   android:background=\"@color/colorAccent\"\n" +
                 "   >\n";
     }
@@ -132,6 +132,10 @@ public class AndroidLayoutBuilder extends LayoutBuilder {
 
     @Override
     public String unitConversion(StArtboards artboards, StLayer layer, BoundResultTag tag, double px) {
-        return (int) px + "px";
+//        return (int) px + "px";
+        if (Math.abs(px) < 1) {
+            return "0dp";
+        }
+        return String.format("@dimen/x%d",(int)px);
     }
 }

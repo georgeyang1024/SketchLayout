@@ -1,6 +1,5 @@
 package cn.georgeyang.intf;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.georgeyang.bean.BoundResultTag;
@@ -13,4 +12,12 @@ import cn.georgeyang.bean.StLayer;
  */
 public interface BuildAlgorithm {
     List<BoundResultTag> buildBoundTag(StArtboards artboards, List<StLayer> orderEffectList);
+
+    /**
+     * 允许的误差
+     * @param artboards
+     * @param layer
+     * @return
+     */
+    double acceptDeviation (StArtboards artboards,StLayer layer,int gravity);
 }
