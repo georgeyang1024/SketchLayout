@@ -9,4 +9,6 @@ public class Gravity {
     public static final int BOTTOM = 80;
     public static final int RIGHT = 5;
     public static final int TOP = 48;
+    public static final int HORIZONTAL = LEFT | RIGHT;//7
+    public static final int VERTICAL = TOP | BOTTOM;//112
 }

@@ -20,4 +20,19 @@ public class BoundResultTag {
 
     public double marginLeft = 0,marginRight = 0,marginTop = 0,marginBottom = 0;
 
+
+    public void clearBound () {
+        leftToLeftLayer = null;
+        leftToRightLayer = null;
+        rightToRightLayer = null;
+        rightToLeftLayer = null;
+        topToTopLayer = null;
+        topToBottomLayer = null;
+        bottomToBottomLayer = null;
+        bottomToTopLayer = null;
+        marginLeft = 0;
+        marginRight = 0;
+        marginTop = 0;
+        marginBottom = 0;
+    }
 }

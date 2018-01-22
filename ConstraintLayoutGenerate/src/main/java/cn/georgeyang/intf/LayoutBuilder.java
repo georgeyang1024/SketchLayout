@@ -6,6 +6,7 @@ import cn.georgeyang.bean.BoundResultTag;
 import cn.georgeyang.bean.StArtboards;
 import cn.georgeyang.bean.StLayer;
 import cn.georgeyang.impl.DefaultBuildAlgorithm;
+import cn.georgeyang.impl.DefaultLayerFilter;
 
 /**
  * 通用布局构建接口
@@ -13,19 +14,24 @@ import cn.georgeyang.impl.DefaultBuildAlgorithm;
  */
 public abstract class LayoutBuilder {
     private BuildAlgorithm buildAlgorithm;
+    private LayerFilter layerFilter;
+
     public LayoutBuilder () {
-        this(new DefaultBuildAlgorithm());
-    }
-    /**
-     * 构建算法
-     * @param buildAlgorithm
-     */
-    public LayoutBuilder (BuildAlgorithm buildAlgorithm) {
-        this.buildAlgorithm = buildAlgorithm;
+        this(new DefaultBuildAlgorithm(),new DefaultLayerFilter());
     }
 
-    public String buildLayout(StringBuffer stringBuffer,StArtboards artboards) {
-        List<BoundResultTag> resultTagList = buildAlgorithm.buildBoundTag(artboards);
+    /**
+     * 构建方法，设置算法和过滤器
+     * @param buildAlgorithm
+     */
+    public LayoutBuilder (BuildAlgorithm buildAlgorithm,LayerFilter layerFilter) {
+        this.buildAlgorithm = buildAlgorithm;
+        this.layerFilter = layerFilter;
+    }
+
+
+    public String buildLayout(StringBuffer stringBuffer, StArtboards artboards) {
+        List<BoundResultTag> resultTagList = buildAlgorithm.build(artboards,layerFilter);
         stringBuffer.append(buildLayoutHeader(artboards,resultTagList));
         stringBuffer.append(buildLayoutBody(artboards,resultTagList));
         stringBuffer.append(buildLayoutFooter(artboards,resultTagList));

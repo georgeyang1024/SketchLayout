@@ -7,6 +7,8 @@ import java.util.Random;
 import cn.georgeyang.bean.BoundResultTag;
 import cn.georgeyang.bean.StArtboards;
 import cn.georgeyang.bean.StLayer;
+import cn.georgeyang.intf.BuildAlgorithm;
+import cn.georgeyang.intf.LayerFilter;
 import cn.georgeyang.intf.LayoutBuilder;
 import cn.georgeyang.util.Color;
 import cn.georgeyang.util.TextUtils;
@@ -17,6 +19,14 @@ import cn.georgeyang.util.TextUtils;
  */
 
 public class AndroidLayoutBuilder extends LayoutBuilder {
+    public AndroidLayoutBuilder() {
+        super();
+    }
+
+    public AndroidLayoutBuilder(BuildAlgorithm buildAlgorithm, LayerFilter layerFilter) {
+        super(buildAlgorithm, layerFilter);
+    }
+
     private Random random = new Random(System.currentTimeMillis());
     @Override
     public String buildLayoutHeader(StArtboards artboards, List<BoundResultTag> tagList) {
@@ -24,8 +34,8 @@ public class AndroidLayoutBuilder extends LayoutBuilder {
                 "<android.support.constraint.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
                 "   xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n" +
                 "   xmlns:tools=\"http://schemas.android.com/tools\"\n" +
-                "   android:layout_width=\"750px\"\n" +
-                "   android:layout_height=\"1134px\"\n" +
+                "   android:layout_width=\"match_parent\"\n" +
+                "   android:layout_height=\"match_parent\"\n" +
                 "   android:background=\"@color/colorAccent\"\n" +
                 "   >\n";
     }
@@ -132,6 +142,10 @@ public class AndroidLayoutBuilder extends LayoutBuilder {
 
     @Override
     public String unitConversion(StArtboards artboards, StLayer layer, BoundResultTag tag, double px) {
-        return (int) px + "px";
+//        return (int) px + "px";
+        if (Math.abs(px) < 1) {
+            return "0dp";
+        }
+        return String.format("@dimen/x%d",(int)px);
     }
 }

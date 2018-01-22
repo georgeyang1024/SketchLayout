@@ -12,6 +12,8 @@ import java.util.List;
 import cn.georgeyang.bean.StArtboards;
 import cn.georgeyang.bean.StLayer;
 import cn.georgeyang.impl.AndroidLayoutBuilder;
+import cn.georgeyang.impl.DefaultBuildAlgorithm;
+import cn.georgeyang.impl.DefaultLayerFilter;
 import cn.georgeyang.util.DisUtil;
 import cn.georgeyang.util.JsonReaderUtil;
 import cn.georgeyang.util.LayerFilterUtil;
@@ -23,10 +25,9 @@ import cn.georgeyang.util.TextUtils;
 public class LayoutGenerateUtil {
 
     public static void main(String[] args) {
-        int showIndex = 5;//登录页
+        int showIndex = 0;//登录页
         generate(showIndex);
     }
-
 
     public static void generate(int pageIndex) {
         try {
@@ -72,7 +73,7 @@ public class LayoutGenerateUtil {
     }
 
     private static void generate(StArtboards artboards) throws Exception {
-        String string = new AndroidLayoutBuilder().buildLayout(artboards);
+        String string = new AndroidLayoutBuilder(new DefaultBuildAlgorithm(),new DefaultLayerFilter()).buildLayout(artboards);
         FileWriter writer=new FileWriter("result.xml");
         writer.write(string);
         writer.close();
