@@ -40,10 +40,10 @@ public class DisUtil {
         if (sourceLayer == null || tagLayer == null) return ret;
         double dis = checkDisDirection(tagLayer.rect,tagGravity,sourceLayer.rect,sourceGravity);
         double aDis = dis;
-        if (parent == sourceLayer && tagGravity==Gravity.BOTTOM && sourceGravity==Gravity.BOTTOM) {
-            //如果元素参考画布底部，底部距离*4倍(因为手机端，宽度和长度会变)
-            aDis = dis * 4;
-        }
+//        if (parent == sourceLayer && tagGravity==Gravity.BOTTOM && sourceGravity==Gravity.BOTTOM) {
+//            //如果元素参考画布底部，底部距离*4倍(因为手机端，宽度和长度会变)
+//            aDis = dis * 4;
+//        }
         ret[0] = aDis;
         ret[1] = dis;
         return ret;
@@ -108,10 +108,21 @@ public class DisUtil {
     }
 
     public static final boolean isInner(StLayer sourceLayer,StLayer outerLayer) {
-        return outerLayer.rect.x < sourceLayer.rect.x
-                && outerLayer.rect.x + outerLayer.rect.width > sourceLayer.rect.x + sourceLayer.rect.width
-                && outerLayer.rect.y < sourceLayer.rect.y
-                && outerLayer.rect.y + outerLayer.rect.height > sourceLayer.rect.y + sourceLayer.rect.height;
+        return isInner(sourceLayer.rect,outerLayer.rect,0);
+    }
+
+    public static final boolean isInner(StLayer sourceLayer,StLayer outerLayer,double acceptDeviation) {
+        return isInner(sourceLayer.rect,outerLayer.rect,acceptDeviation);
+    }
+
+    public static final boolean isInner(StRect sourceRect,StRect outerRect) {
+        return isInner(sourceRect,outerRect,0);
+    }
+    public static final boolean isInner(StRect sourceRect,StRect outerRect,double acceptDeviation) {
+        return outerRect.x - acceptDeviation / 2 <= sourceRect.x
+                && outerRect.x + outerRect.width + acceptDeviation / 2 >= sourceRect.x + sourceRect.width
+                && outerRect.y - acceptDeviation / 2 <= sourceRect.y
+                && outerRect.y + outerRect.height + acceptDeviation / 2 >= sourceRect.y + sourceRect.height;
     }
 
 }

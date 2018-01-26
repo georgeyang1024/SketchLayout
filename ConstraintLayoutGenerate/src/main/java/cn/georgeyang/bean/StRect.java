@@ -5,5 +5,13 @@ package cn.georgeyang.bean;
  */
 
 public class StRect {
+    public StRect () {}
+    public StRect (StArtboards stArtboards) {
+        this.x = 0;
+        this.y = 0;
+        this.width = stArtboards.width;
+        this.height = stArtboards.height;
+    }
+
     public float x,y,width,height;
 }

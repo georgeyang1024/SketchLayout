@@ -25,17 +25,18 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
 
     @Override
     public List<BoundResultTag> build(StArtboards artboards, LayerFilter layerFilter) {
-        List<StLayer> orderEffectList = getEffectList(artboards,layerFilter);
+        StRect effectBounds = layerFilter.effectBounds(artboards,acceptDeviation(artboards,null,Gravity.NONE));
+        List<StLayer> orderEffectList = getEffectList(artboards,layerFilter,effectBounds);
         orderFindList(artboards,orderEffectList);
         List<StLayer> orderEffectList2 = filterDepend(artboards,layerFilter,orderEffectList);
-        List<BoundTag> parseBoundTags = parseBoundTags(artboards,orderEffectList2,layerFilter);
+        List<BoundTag> parseBoundTags = parseBoundTags(artboards,orderEffectList2,effectBounds,layerFilter);
         return parseBoundResultTags(artboards,parseBoundTags,layerFilter);
     }
 
-    public List<StLayer> getEffectList(StArtboards artboards,LayerFilter layerFilter) {
+    public List<StLayer> getEffectList(StArtboards artboards,LayerFilter layerFilter,StRect effectBound) {
         ArrayList<StLayer> layers = new ArrayList<>();
         for (StLayer layer:artboards.layers) {
-            if (!layerFilter.filterLayer(artboards,layer)) {
+            if (!layerFilter.filterLayer(artboards,layer,effectBound,acceptDeviation(artboards,null,Gravity.NONE))) {
                 layers.add(layer);
             }
         }
@@ -193,14 +194,14 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
                 double bottom = DisUtil.checkRealDisDirection(tag.source,Gravity.BOTTOM,tag.outLayer,Gravity.BOTTOM);
                 if ((int)left >> 31 == (int)right >> 31) {//判断是否都是正数或者都是负数
                     if (Math.abs(Math.abs(left) - Math.abs(right)) <= acceptDeviation(artboards,tag.outLayer,Gravity.HORIZONTAL)) {
-                        resultTag.clearBound();
+                        resultTag.clearBound(Gravity.NONE);
                         resultTag.leftToLeftLayer = tag.outLayer;
                         resultTag.rightToRightLayer = tag.outLayer;
                     }
                 }
                 if ((int)top >> 31 == (int)bottom >> 31) {//判断是否都是正数或者都是负数
                     if (Math.abs(Math.abs(top) - Math.abs(bottom)) <= acceptDeviation(artboards,tag.outLayer,Gravity.VERTICAL)) {
-                        resultTag.clearBound();
+                        resultTag.clearBound(Gravity.NONE);
                         resultTag.topToTopLayer = tag.outLayer;
                         resultTag.bottomToBottomLayer = tag.outLayer;
                     }
@@ -238,7 +239,7 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
      * @return
      * @throws Exception
      */
-    private List<BoundTag> parseBoundTags(StArtboards artboards, List<StLayer> orderEffectList,LayerFilter layerFilter) {
+    private List<BoundTag> parseBoundTags(StArtboards artboards, List<StLayer> orderEffectList,StRect effectBounds,LayerFilter layerFilter) {
         List<BoundTag> boundTags = new ArrayList<>();//已找到位置的Layer列表
         List<String> names = new ArrayList<>();
 
@@ -246,10 +247,7 @@ public class DefaultBuildAlgorithm implements BuildAlgorithm {
         rootLayer.name = "parent";
         rootLayer.objectID = "parent";
         rootLayer.rect = new StRect();
-        rootLayer.rect.x = 0;
-        rootLayer.rect.y = 0;
-        rootLayer.rect.width = artboards.width;
-        rootLayer.rect.height = artboards.height;
+        rootLayer.rect = effectBounds;
 
         orderEffectList.add(0,rootLayer);
 

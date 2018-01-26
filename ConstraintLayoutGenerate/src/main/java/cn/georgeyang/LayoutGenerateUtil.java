@@ -3,20 +3,12 @@ package cn.georgeyang;
 import com.google.gson.stream.JsonReader;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import cn.georgeyang.bean.StArtboards;
-import cn.georgeyang.bean.StLayer;
 import cn.georgeyang.impl.AndroidLayoutBuilder;
 import cn.georgeyang.impl.DefaultBuildAlgorithm;
 import cn.georgeyang.impl.DefaultLayerFilter;
-import cn.georgeyang.util.DisUtil;
 import cn.georgeyang.util.JsonReaderUtil;
-import cn.georgeyang.util.LayerFilterUtil;
 import cn.georgeyang.util.TextUtils;
 
 /**
@@ -25,7 +17,7 @@ import cn.georgeyang.util.TextUtils;
 public class LayoutGenerateUtil {
 
     public static void main(String[] args) {
-        int showIndex = 4;//登录页
+        int showIndex = 0;//登录页
         generate(showIndex);
     }
 
@@ -48,7 +40,7 @@ public class LayoutGenerateUtil {
                             System.out.println("name:" + stArtboards.name);
                             if (stArtboards.height*1f/stArtboards.width<=16f/9) {
                                 //大于6比9，是很长的图，不适合一屏展示，从上面开始布局
-
+                                System.out.print("wewrwe");
                             } else {
                                 //一屏幕能展示完，边缘开始布局
                                 generate(stArtboards);

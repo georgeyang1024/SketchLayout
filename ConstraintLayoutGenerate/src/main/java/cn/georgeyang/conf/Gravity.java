@@ -5,6 +5,7 @@ package cn.georgeyang.conf;
  */
 
 public class Gravity {
+    public static final int NONE = 0;
     public static final int LEFT = 3;
     public static final int BOTTOM = 80;
     public static final int RIGHT = 5;
